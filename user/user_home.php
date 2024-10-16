@@ -487,14 +487,6 @@ $result_about = $conn->query($sql_about);
             </div>
         </div>
     </section>
-    <!-- chat -->
-    <main class="content px-3 py-2">
-        <div class="container-fluid">
-            <button id="chat-toggle" class="chat-button">
-                <i class="fa-solid fa-comment"></i>
-            </button>
-        </div>
-    </main>
     <!-- info section -->
     <section class="info_section ">
         <div class="container">
