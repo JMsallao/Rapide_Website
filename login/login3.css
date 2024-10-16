@@ -1,0 +1,168 @@
+/* General body and text settings */
+body {
+    background: url('login_bg.png') no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    height: 100vh;
+}
+
+
+
+.main_container {
+    background: url('bg1.jpg') no-repeat center center; 
+    background-size: cover; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px; 
+    height: 50%; 
+    padding: 20px;
+    margin: auto;
+    background-color: transparent; 
+}
+
+
+/* Login form container */
+.login-form {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    width: 50%; 
+    max-width: 500px;
+    background-color: rgba(167, 167, 167, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    margin-left: 50%;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Image container for the right side */
+.image-container {
+    width: 50%; 
+    height: 100%; 
+}
+
+.image-container img {
+    top: 0;
+    position: absolute;
+    width: 50%; 
+    height: 50%; 
+    object-fit: cover; 
+}
+
+/* Form styling */
+.login-form h1 {
+    text-align: center;
+    width: 100%;
+}
+
+.login-form .form-group {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center; 
+}
+
+.login-form input, 
+.login-form button {
+    width: 80%; 
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px 0;
+    border: none;
+    outline: none;
+}
+
+.login-form button {
+    background-color: rgb(243, 212, 72);
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50%;
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect - changes background color to red */
+.login-form button:hover {
+    background-color: rgb(255, 17, 0);
+    color: rgb(255, 255, 255); 
+}
+
+/* Offcanvas styling */
+.offcanvas-header {
+    background-color: rgb(61, 61, 61);
+}
+
+.offcanvas-title {
+    color: rgb(0, 0, 0);
+}
+
+.offcanvas-body {
+    background: url('login_bg.png') no-repeat center center; 
+    background-size: cover; 
+    color: rgb(0, 0, 0);
+}
+
+.offcanvas-body input {
+    background-color: rgb(255, 255, 255);
+    color: black;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.offcanvas-body button {
+    background-color: rgb(243, 212, 72); /* Initial background color */
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+/* Hover effect */
+.offcanvas-body button:hover {
+    background-color: rgba(255, 0, 0, 0.7); 
+    color: rgb(255, 255, 255); 
+    transform: scale(1.05);
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main_container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .login-form, 
+    .image-container {
+        width: 100%; 
+    }
+
+    .login-form {
+        margin-right: 0;
+        margin-bottom: 20px; 
+    }
+}
+
+@media (max-width: 480px) {
+    .login-form {
+        padding: 15px;
+    }
+
+    .btn-signup {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
