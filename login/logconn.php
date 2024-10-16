@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION["id"] = $row['id'];
 
             if ($row['is_admin'] == 1) {
-                header('Location: ../admin/db-home.php');
+                header('Location: ../admin\db-home.php');
                 exit();
             } else {
                 echo '<script type="text/javascript">

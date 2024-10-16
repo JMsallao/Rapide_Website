@@ -1,5 +1,5 @@
 <?php
-include('connection.php');
+include('../connection.php');
 
 if(isset($_POST['fname']) && isset($_POST['lname']) && isset($_POST['email']) && isset($_POST['uname']) && isset($_POST['password']) && isset($_POST['confirm']))
 {
@@ -37,7 +37,7 @@ if(isset($_POST['fname']) && isset($_POST['lname']) && isset($_POST['email']) &&
     else if ($conn->query($sql) === TRUE){
         echo "<script>
         alert('Registration successful');
-        window.location='index.php';
+        window.location='login.php';
         </script>";
         exit;
     } }

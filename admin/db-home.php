@@ -2,10 +2,10 @@
 session_start();
 require_once "../connection.php";
 
-if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1){
-    echo "<script>alert('Access denied!'); window.location.href = '../home/login-form.php';</script>";
-    exit();
-}
+// if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== 1){
+//     echo "<script>alert('Access denied!'); window.location.href = '../login/login.php';</script>";
+//     exit();
+// }
 
 
 
@@ -84,7 +84,7 @@ $result_account = $conn->query($sql_account);
             <!-- Content For Sidebar -->
             <div class="h-100">
                 <div class="sidebar-logo"><img src="../img/logo-header.png" width="70px" height="auto" alt="Icon">
-                    <a href="dashboard.html" class="logo">A.C Tech</a>
+                    <a href="dashboard.html" class="logo">Rapide</a>
                 </div>
                 <ul class="sidebar-nav">
                     <li class="sidebar-item">
@@ -93,38 +93,36 @@ $result_account = $conn->query($sql_account);
                             Dashboard
                         </a>
                     </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-target="#pages" data-bs-toggle="collapse"
-                            aria-expanded="false"><i class="fa-solid fa-calendar pe-2"></i>
-                            Booking Appointments
+                    <!-- <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-target="#bookings" data-bs-toggle="collapse"
+                            aria-expanded="false"><i class="fa-solid fa-bookmark pe-2"></i>
+                            List of Bookings
                         </a>
-                        <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <ul id="bookings" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#pages">
                             <li class="sidebar-item">
-                                <a href="db-calendar.php" class="sidebar-link">Calendar</a>
+                                <a href="db-appointment-list.php" class="sidebar-link">Pendings</a>
                             </li>
                             <li class="sidebar-item">
-                                <a href="#" class="sidebar-link collapsed" data-bs-target="#bookings"
-                                    data-bs-toggle="collapse" aria-expanded="false"><i
-                                        class="fa-solid fa-bookmark pe-2"></i>
-                                    List of Bookings
-                                </a>
-                                <ul id="bookings" class="sidebar-dropdown list-unstyled collapse"
-                                    data-bs-parent="#pages">
-                                    <li class="sidebar-item">
-                                        <a href="db-appointment-list.php" class="sidebar-link">Pendings</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="db-ap-approved.php" class="sidebar-link">Approved</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="db-ap-rejected.php" class="sidebar-link">Rejected</a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="db-ap-cancelled.php" class="sidebar-link">Cancelled</a>
-                                    </li>
-                                </ul>
+                                <a href="db-ap-approved.php" class="sidebar-link">Approved</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="db-ap-rejected.php" class="sidebar-link">Rejected</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="db-ap-cancelled.php" class="sidebar-link">Cancelled</a>
                             </li>
                         </ul>
+                        <ul id="pages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+
+
+                        </ul>
+                    </li>
+
+                    </li> -->
+
+                    <li class="sidebar-item">
+                        <a href="db-calendar.php" class="sidebar-link">Calendar</a>
                     </li>
                     <li class="sidebar-item">
                         <a href="db-users-manage.php" class="sidebar-link">
@@ -163,7 +161,7 @@ $result_account = $conn->query($sql_account);
                             </a>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <a href="db-settings.php" class="dropdown-item">Setting</a>
-                                <a href="a-logout.php" class="dropdown-item">Logout</a>
+                                <a href="../admin/admin-logout.php" class="dropdown-item">Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -180,7 +178,7 @@ $result_account = $conn->query($sql_account);
                                         <div class="col-8">
                                             <div class="p-3 m-2">
                                                 <h4>Welcome Back, Admin!</h4>
-                                                <p class="mb-0"> A.C Tech Air-conditoning Service</p>
+                                                <p class="mb-0"> Rapide Service</p>
                                             </div>
                                         </div>
                                     </div>
@@ -188,6 +186,7 @@ $result_account = $conn->query($sql_account);
                             </div>
                         </div>
 
+                        <!-- ate palagyan ako ng backend neto, dapat nakikita yung total numbers ng users. ty!! -->
                         <div class="col-12 col-md-3 d-flex">
                             <div class="card flex-fill border-0 illustration">
                                 <div class="card-body d-flex flex-fill">
@@ -199,7 +198,7 @@ $result_account = $conn->query($sql_account);
                                                         group
                                                     </span>
                                                     <span class="count">
-                                                        <?php echo $count['account_id'] ?></span>
+                                                        <?php echo $count['id'] ?></span>
                                                     <div class="client-info">
                                                         <h5 class="mb-2">Clients</h5>
                                                     </div>
@@ -212,36 +211,7 @@ $result_account = $conn->query($sql_account);
                         </div>
 
 
-                        <div class="col-12 col-md-3 d-flex">
-                            <div class="card flex-fill border-0 illustration">
-                                <div class="card-body d-flex flex-fill">
-                                    <div class="row g-0 w-100">
-                                        <div class="col-10">
-                                            <div class="p-3 m-1">
-                                                <div class="row-8">
-                                                    <span class="material-icons-outlined">
-                                                        swap_vert
-                                                    </span>
-                                                    <?php
-                                                            // Assuming $conn is your database connection
-                                                            $sql = "SELECT AVG(rate) AS averageRating FROM rating";
-                                                            $result = $conn->query($sql);
-                                                            $row = $result->fetch_assoc();
-                                                            $averageRating = $row['averageRating'];
-                                                            $ratingPercentage = $averageRating * 20;
-                                                            ?>
-                                                    <span
-                                                        class="count"><?php echo number_format($ratingPercentage, 2); ?>%</span>
-                                                    <div class="client-info">
-                                                        <h5 class="mb-2">Ratings</h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                     <!-- Table Element -->
                     <div class="card p-2 border-0">
@@ -294,13 +264,13 @@ $result_account = $conn->query($sql_account);
                         $conn->close();
                     ?>
 
-                    <div class="col-12 col-md-6 d-flex">
+                    <!-- <div class="col-12 col-md-6 d-flex">
                         <div class="card my-card border-0">
                             <div class="card-body p-3 d-flex flex-fill">
                                 <div id="barchart_material" style="width: 900px; height: 500px;"></div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
 
                 </div>
             </main>
