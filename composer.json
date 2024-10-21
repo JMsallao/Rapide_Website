@@ -1,0 +1,11 @@
+{
+    "name": "jm/rapide",
+    "autoload": {
+        "psr-4": {
+            "Jm\\Rapide\\": "src/"
+        }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

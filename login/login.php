@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Sign Up</title>
-    <!-- <link rel="stylesheet" href="login\login3.css" /> -->
+    <link rel="stylesheet" href="login\login3.css" />
     <link rel="stylesheet" href="css\bootstrap.min.css" />
     <script src="js\bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -27,27 +27,22 @@
         height: 100vh;
     }
 
-    .container {
-        display: flex;
-        align-items: end;
-        justify-content: end;
-    }
 
 
     .main_container {
         background: url('bg1.jpg') no-repeat center center;
         background-size: cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
         max-width: 1200px;
-        height: auto;
-        /* Changed to auto for flexibility */
+        height: 50%;
         padding: 20px;
         margin: auto;
         background-color: transparent;
-        flex-wrap: wrap;
-        position: absolute;
-        /* Allows wrapping on smaller screens */
     }
+
 
     /* Login form container */
     .login-form {
@@ -55,28 +50,26 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100%;
-        /* Set to 100% for flexibility */
+        width: 50%;
         max-width: 500px;
         background-color: rgba(167, 167, 167, 0.5);
         padding: 20px;
         border-radius: 10px;
+        margin-left: 50%;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     }
 
     /* Image container for the right side */
     .image-container {
-        width: 100%;
-        /* Set to 100% for flexibility */
-        height: auto;
-        /* Allows for responsive height */
+        width: 50%;
+        height: 100%;
     }
 
     .image-container img {
-        width: 100%;
-        /* Full width for images */
-        height: auto;
-        /* Maintains aspect ratio */
+        top: 0;
+        position: absolute;
+        width: 50%;
+        height: 50%;
         object-fit: cover;
     }
 
@@ -84,7 +77,6 @@
     .login-form h1 {
         text-align: center;
         width: 100%;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .login-form .form-group {
@@ -96,7 +88,7 @@
 
     .login-form input,
     .login-form button {
-        width: 90%;
+        width: 80%;
         padding: 10px;
         border-radius: 8px;
         margin: 5px 0;
@@ -110,12 +102,11 @@
         padding: 10px;
         border-radius: 5px;
         cursor: pointer;
-        width: 70%;
-        /* Full width on smaller screens */
+        width: 50%;
         transition: background-color 0.3s ease;
     }
 
-    /* Hover effect */
+    /* Hover effect - changes background color to red */
     .login-form button:hover {
         background-color: rgb(255, 17, 0);
         color: rgb(255, 255, 255);
@@ -148,6 +139,7 @@
 
     .offcanvas-body button {
         background-color: rgb(243, 212, 72);
+        /* Initial background color */
         color: black;
         border: none;
         padding: 10px 20px;
@@ -163,36 +155,28 @@
         transform: scale(1.05);
     }
 
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .main_container {
             flex-direction: column;
-            /* Stack elements */
             height: auto;
-            /* Allow for dynamic height */
         }
 
         .login-form,
         .image-container {
             width: 100%;
-            /* Full width on smaller screens */
         }
 
         .login-form {
-            margin: 0 0 20px 0;
-            /* Remove margin-left */
+            margin-right: 0;
+            margin-bottom: 20px;
         }
     }
 
     @media (max-width: 480px) {
         .login-form {
             padding: 15px;
-            /* Adjust padding for smaller devices */
-        }
-
-        .login-form button {
-            width: 100%;
-            /* Full width for buttons */
         }
 
         .btn-signup {
@@ -236,7 +220,7 @@
             </div>
             <div class="offcanvas-body">
                 <form action="regconn.php" method="post">
-                    <div class="signup_container">
+                    <div class="container">
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">
@@ -258,7 +242,7 @@
                             <input type="text" name="uname" placeholder="User Name" />
                         </div>
                         <div class="form-group">
-                            <input type="text" name="address" placeholder="Full Address" />
+                            <input type="text" name="phone" placeholder="Mobile Number" />
                         </div>
                         <div class="form-group">
                             <input type="password" name="password" placeholder="Password" />
@@ -275,9 +259,46 @@
         </div>
     </div>
 
+    <!-- Verification Modal -->
+    <div class="modal fade" id="verificationModal" tabindex="-1" aria-labelledby="verificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verificationModalLabel">Enter Verification Code</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="verify_code.php" method="POST">
+                        <div class="form-group">
+                            <label for="verification_code">Verification Code:</label>
+                            <input type="text" class="form-control" id="verification_code" name="verification_code"
+                                placeholder="Enter the code" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <button type="submit" class="btn btn-primary">Verify</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Automatically open the verification modal after registration
+        <?php
+        if (isset($_SESSION['verification_pending']) && $_SESSION['verification_pending'] === true) {
+            echo 'var verificationModal = new bootstrap.Modal(document.getElementById("verificationModal"));';
+            echo 'verificationModal.show();';
+            unset($_SESSION['verification_pending']);
+        }
+        ?>
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-w76A7a9Hr8lFztXXwjbK6g3Kbt1Lz6Y3auD8r5c6EwHgjV4ldtJgROZXB6ZGdvep" crossorigin="anonymous">
     </script>
 </body>
+
 
 </html>

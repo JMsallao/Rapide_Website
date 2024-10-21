@@ -2,16 +2,11 @@
 // Include your database connection file
 include ('connection.php');
 include ("index-css.php");
-
-
 // Query to get package services from the database
 $sql_package = "SELECT * FROM package_list";
 $result_package = $conn->query($sql_package);
-
 $sql_about = "SELECT * FROM about";
 $result_about = $conn->query($sql_about);
-
-
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +30,6 @@ $result_about = $conn->query($sql_about);
         integrity="sha256-mLBIhmBvigTFWPSCtvdu6a76T+3Xyt+K571hupeFLg4=" crossorigin="anonymous" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
     <link href="css/responsive.css" rel="stylesheet" />
-
 </head>
 
 <body>
@@ -45,7 +39,6 @@ $result_about = $conn->query($sql_about);
         </div>
         <!-- header section strats -->
         <header class="header_section">
-
             <div class="header_bottom">
                 <div class="container-fluid">
                     <nav class="navbar navbar-expand-lg custom_nav-container ">
@@ -56,10 +49,8 @@ $result_about = $conn->query($sql_about);
                             aria-expanded="false" aria-label="Toggle navigation">
                             <span class=""> </span>
                         </button>
-
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav  ">
-
                                 <li class="nav-item">
                                     <a class="nav-link" href="login\login.php">
                                         <i class="fa fa-user" aria-hidden="true"></i>
@@ -100,7 +91,6 @@ $result_about = $conn->query($sql_about);
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
-
                     // After the first item, don't add the active class
                     $isActive = false;
                 }
@@ -123,10 +113,7 @@ $result_about = $conn->query($sql_about);
         </section>
         <!-- end slider section -->
     </div>
-
-
     <!-- service section -->
-
     <section class="service_section layout_padding">
         <div class="container">
             <div class="heading_container heading_center ">
@@ -134,7 +121,6 @@ $result_about = $conn->query($sql_about);
                     Our Services
                 </h2>
                 <p class="col-lg-8 px-0">
-
                     "Our auto repair shop offers expert maintenance and repair services, including engine
                     diagnostics,
                     brake repairs, oil changes, tire services, and more. We ensure fast, reliable work to keep your
@@ -243,14 +229,9 @@ $result_about = $conn->query($sql_about);
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
-
-    <!-- service section ends -->
-
     <!-- about section -->
-
     <section class="about_section">
         <div class="container-fluid">
             <div class="row">
@@ -285,12 +266,6 @@ $result_about = $conn->query($sql_about);
             </div>
         </div>
     </section>
-
-    <!-- about section ends -->
-
-
-    <!-- end team section -->
-
     <section class="info_section ">
         <div class="container">
             <div class="info_top">
@@ -372,9 +347,7 @@ $result_about = $conn->query($sql_about);
             </div>
         </div>
     </section>
-
     <!-- end info_section -->
-
     <!-- footer section -->
     <footer class="footer_section">
         <div class="container">
@@ -385,7 +358,6 @@ $result_about = $conn->query($sql_about);
         </div>
     </footer>
     <!-- footer section -->
-
     <!-- jQery -->
     <script src="js\jquery-3.4.1.min.js"></script>
     <!-- popper js -->
