@@ -10,8 +10,6 @@ body {
     height: 100vh;
 }
 
-
-
 .main_container {
     background: url('bg1.jpg') no-repeat center center; 
     background-size: cover; 
@@ -20,12 +18,12 @@ body {
     justify-content: center;
     width: 100%;
     max-width: 1200px; 
-    height: 50%; 
+    height: auto; /* Adjusted for responsiveness */
     padding: 20px;
     margin: auto;
     background-color: transparent; 
+    flex-wrap: wrap; /* Allow wrapping */
 }
-
 
 /* Login form container */
 .login-form {
@@ -33,26 +31,23 @@ body {
     flex-direction: column; 
     align-items: center; 
     justify-content: center;
-    width: 50%; 
+    width: 100%; /* Changed to full width for small screens */
     max-width: 500px;
     background-color: rgba(167, 167, 167, 0.5);
     padding: 20px;
     border-radius: 10px;
-    margin-left: 50%;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 /* Image container for the right side */
 .image-container {
-    width: 50%; 
-    height: 100%; 
+    width: 100%; /* Full width on smaller screens */
+    height: auto; /* Adjust for aspect ratio */
 }
 
 .image-container img {
-    top: 0;
-    position: absolute;
-    width: 50%; 
-    height: 50%; 
+    width: 100%; /* Full width */
+    height: auto; /* Maintain aspect ratio */
     object-fit: cover; 
 }
 
@@ -89,7 +84,7 @@ body {
     transition: background-color 0.3s ease;
 }
 
-/* Hover effect - changes background color to red */
+/* Hover effect */
 .login-form button:hover {
     background-color: rgb(255, 17, 0);
     color: rgb(255, 255, 255); 
@@ -121,7 +116,7 @@ body {
 }
 
 .offcanvas-body button {
-    background-color: rgb(243, 212, 72); /* Initial background color */
+    background-color: rgb(243, 212, 72); 
     color: black;
     border: none;
     padding: 10px 20px;
@@ -137,17 +132,16 @@ body {
     transform: scale(1.05);
 }
 
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .main_container {
         flex-direction: column;
-        height: auto;
+        height: auto; /* Allow for dynamic height */
     }
 
     .login-form, 
     .image-container {
-        width: 100%; 
+        width: 100%; /* Full width on smaller screens */
     }
 
     .login-form {
@@ -159,6 +153,10 @@ body {
 @media (max-width: 480px) {
     .login-form {
         padding: 15px;
+    }
+
+    .login-form button {
+        width: 100%; /* Full width for buttons */
     }
 
     .btn-signup {

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Sign Up</title>
-    <link rel="stylesheet" href="login\login3.css" />
+    <!-- <link rel="stylesheet" href="login\login3.css" /> -->
     <link rel="stylesheet" href="css\bootstrap.min.css" />
     <script src="js\bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -27,22 +27,27 @@
         height: 100vh;
     }
 
+    .container {
+        display: flex;
+        align-items: end;
+        justify-content: end;
+    }
 
 
     .main_container {
         background: url('bg1.jpg') no-repeat center center;
         background-size: cover;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         width: 100%;
         max-width: 1200px;
-        height: 50%;
+        height: auto;
+        /* Changed to auto for flexibility */
         padding: 20px;
         margin: auto;
         background-color: transparent;
+        flex-wrap: wrap;
+        position: absolute;
+        /* Allows wrapping on smaller screens */
     }
-
 
     /* Login form container */
     .login-form {
@@ -50,26 +55,28 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 50%;
+        width: 100%;
+        /* Set to 100% for flexibility */
         max-width: 500px;
         background-color: rgba(167, 167, 167, 0.5);
         padding: 20px;
         border-radius: 10px;
-        margin-left: 50%;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     }
 
     /* Image container for the right side */
     .image-container {
-        width: 50%;
-        height: 100%;
+        width: 100%;
+        /* Set to 100% for flexibility */
+        height: auto;
+        /* Allows for responsive height */
     }
 
     .image-container img {
-        top: 0;
-        position: absolute;
-        width: 50%;
-        height: 50%;
+        width: 100%;
+        /* Full width for images */
+        height: auto;
+        /* Maintains aspect ratio */
         object-fit: cover;
     }
 
@@ -77,6 +84,7 @@
     .login-form h1 {
         text-align: center;
         width: 100%;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .login-form .form-group {
@@ -88,7 +96,7 @@
 
     .login-form input,
     .login-form button {
-        width: 80%;
+        width: 90%;
         padding: 10px;
         border-radius: 8px;
         margin: 5px 0;
@@ -102,11 +110,12 @@
         padding: 10px;
         border-radius: 5px;
         cursor: pointer;
-        width: 50%;
+        width: 70%;
+        /* Full width on smaller screens */
         transition: background-color 0.3s ease;
     }
 
-    /* Hover effect - changes background color to red */
+    /* Hover effect */
     .login-form button:hover {
         background-color: rgb(255, 17, 0);
         color: rgb(255, 255, 255);
@@ -139,7 +148,6 @@
 
     .offcanvas-body button {
         background-color: rgb(243, 212, 72);
-        /* Initial background color */
         color: black;
         border: none;
         padding: 10px 20px;
@@ -155,28 +163,36 @@
         transform: scale(1.05);
     }
 
-
     /* Responsive adjustments */
     @media (max-width: 768px) {
         .main_container {
             flex-direction: column;
+            /* Stack elements */
             height: auto;
+            /* Allow for dynamic height */
         }
 
         .login-form,
         .image-container {
             width: 100%;
+            /* Full width on smaller screens */
         }
 
         .login-form {
-            margin-right: 0;
-            margin-bottom: 20px;
+            margin: 0 0 20px 0;
+            /* Remove margin-left */
         }
     }
 
     @media (max-width: 480px) {
         .login-form {
             padding: 15px;
+            /* Adjust padding for smaller devices */
+        }
+
+        .login-form button {
+            width: 100%;
+            /* Full width for buttons */
         }
 
         .btn-signup {
@@ -220,7 +236,7 @@
             </div>
             <div class="offcanvas-body">
                 <form action="regconn.php" method="post">
-                    <div class="container">
+                    <div class="signup_container">
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group">

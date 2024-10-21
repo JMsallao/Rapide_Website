@@ -46,7 +46,7 @@ $result_about = $conn->query($sql_about);
     <link href="../css/font-awesome.min.css" rel="stylesheet" />
 
     <!-- Custom styles for this template -->
-    <link href="../css/style4.css" rel="stylesheet" />
+
     <!-- responsive style -->
     <link href="../css/responsive.css" rel="stylesheet" />
 
@@ -62,7 +62,6 @@ $result_about = $conn->query($sql_about);
     <style>
     /* Styling for the user tab and dropdown */
     .user_tab {
-
         display: flex;
         align-items: center;
         justify-content: flex-end;
@@ -70,10 +69,9 @@ $result_about = $conn->query($sql_about);
 
     /* User button */
     .user-btn {
-
         background-color: transparent;
         border: none;
-        padding: 5px;
+
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -97,8 +95,6 @@ $result_about = $conn->query($sql_about);
 
     /* Dropdown menu styling */
     .dropdown-menu {
-        background-color: yellow;
-        padding: 10px;
         margin-top: 10px;
         border-radius: 10px;
         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -107,7 +103,6 @@ $result_about = $conn->query($sql_about);
 
     /* Dropdown container */
     .dropdown_container {
-        background-color: yellow;
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -126,18 +121,31 @@ $result_about = $conn->query($sql_about);
     #dropdown>div>li:nth-child(1)>form>button {
         width: 100%;
         height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        text-align: start;
+        border: none;
+    }
+
+    #dropdown>div>li:nth-child(1)>form>button:hover {
+        background-color: yellow;
+        width: 100%;
+        height: 35px;
+        text-align: start;
         border: none;
     }
 
     #dropdown>div>li:nth-child(2)>form>button {
         width: 100%;
         height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        text-align: start;
+        border: none;
+    }
+
+    #dropdown>div>li:nth-child(2)>form>button:hover {
+        background-color: yellow;
+        width: 100%;
+        height: 35px;
+        text-align: start;
+        border-radius: 8px;
         border: none;
     }
 
@@ -162,6 +170,23 @@ $result_about = $conn->query($sql_about);
             font-size: 18px;
         }
     }
+
+
+
+
+    /* chat */
+    body>div>div.chat>a>button {
+        width: 50px;
+        height: 70px;
+        position: fixed;
+        margin-top: 450px;
+        margin-left: 1300px;
+    }
+
+    body>div>div.chat>a>button>img {
+        width: 60px;
+        border-radius: 50%;
+    }
     </style>
 </head>
 
@@ -171,7 +196,7 @@ $result_about = $conn->query($sql_about);
         <a href="../chat_system\user\chatroom.php?id=3">
             <button value=" <?php echo $row['chatroomid']; ?>" type="button" class="btn  border-0"
                 data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
-                <img src="img\chat_icon.png" />
+                <img src="../images/chat.png" />
             </button>
         </a>
     </div>
