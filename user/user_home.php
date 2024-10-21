@@ -175,29 +175,45 @@ $result_about = $conn->query($sql_about);
 
 
     /* chat */
-    body>div>div.chat>a>button {
-        width: 50px;
+    .chat {
+        width: 70px;
         height: 70px;
         position: fixed;
-        margin-top: 450px;
-        margin-left: 1300px;
+        bottom: 20px;
+        right: 20px;
+        overflow: hidden;
+        border-radius: 50%;
+        background-color: #ffff;
+        transition: .2s;
+        z-index: 5;
     }
 
-    body>div>div.chat>a>button>img {
+    .chat:hover {
+        transform: scale(105%);
+    }
+
+    .chat img {
+        width: 70%;
+        height: 70%;
+        object-fit: cover;
+    }
+
+    /* body>div>div.chat>a>button>img {
         width: 60px;
         border-radius: 50%;
-    }
+    } */
     </style>
 </head>
 
-<body>
+<body class="position-relative">
 
-    <div class="chat">
-        <a href="../chat_system\user\chatroom.php?id=3">
-            <button value=" <?php echo $row['chatroomid']; ?>" type="button" class="btn  border-0"
-                data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
-                <img src="../images/chat.png" />
-            </button>
+    <div>
+        <a class="chat d-flex justify-content-center align-items-center pb-1"
+            href="../chat_system\user\chatroom.php?id=3">
+            <!-- <button value=" <?php echo $row['chatroomid']; ?>" type="button" class="btn  border-0" -->
+            <!-- data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top"> -->
+            <img src="../images/chat.png" />
+            <!-- </button> -->
         </a>
     </div>
     <!-- slider section -->
@@ -457,177 +473,6 @@ $result_about = $conn->query($sql_about);
     </section>
 
     <!-- end team section -->
-
-    <!-- contact section -->
-    <section class="contact_section mt-5">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6 px-0">
-                    <div class="img-box ">
-                        <img src="../images/bg3.jpg" class="box_img" alt="about img">
-                    </div>
-                </div>
-                <div class="col-md-5 mx-auto">
-                    <div class="form_container">
-                        <div class="heading_container heading_center">
-                            <h2>Get In Touch</h2>
-                        </div>
-                        <form action="">
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <input type="text" class="form-control" placeholder="Your Name" />
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-lg-6">
-                                    <input type="text" class="form-control" placeholder="Phone Number" />
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <select name="" id="" class="form-control wide">
-                                        <option value="">Select Service</option>
-                                        <option value="">Service 1</option>
-                                        <option value="">Service 2</option>
-                                        <option value="">Service 3</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <input type="email" class="form-control" placeholder="Email" />
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <input type="text" class="message-box form-control" placeholder="Message" />
-                                </div>
-                            </div>
-                            <div class="btn_box">
-                                <button>
-                                    SEND
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- info section -->
-    <section class="info_section ">
-        <div class="container">
-            <div class="info_top">
-                <div class="row">
-                    <div class="col-md-3 ">
-                        <a class="navbar-brand" href="../index.html">
-                            Rapide
-                        </a>
-                    </div>
-                    <div class="col-md-5 ">
-                        <div class="info_contact">
-                            <a href="">
-                                <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                <span>
-                                    Location
-                                </span>
-                            </a>
-                            <a href="">
-                                <i class="fa fa-phone" aria-hidden="true"></i>
-                                <span>
-                                    Call : 0966 061 9979
-                                </span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-md-4 ">
-                        <div class="social_box">
-                            <a href="">
-                                <i class="fa fa-facebook" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="info_bottom">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6">
-                        <div class="info_detail">
-                            <h5>
-                                Company
-                            </h5>
-                            <p>
-                                Randomised words which don't look even slightly believable. If you are going to use a
-                                passage of
-                                Lorem
-                                Ipsum, you need to be sure
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6">
-                        <div class="info_form">
-                            <h5>
-                                NEWSLETTER
-                            </h5>
-                            <form action="">
-                                <input type="text" placeholder="Enter Your Email" />
-                                <button type="submit">
-                                    Subscribe
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="info_detail">
-                            <h5>
-                                Services
-                            </h5>
-                            <p>
-                                Randomised words which don't look even slightly believable. If you are going to use a
-                                passage of
-                                Lorem
-                                Ipsum, you need to be sure
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6">
-                        <div class="">
-                            <h5>
-                                Useful links
-                            </h5>
-                            <ul class="info_menu">
-                                <li>
-                                    <a href="index.html">
-                                        Home
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="about.html">
-                                        About
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="service.html">
-                                        Services
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="team.html">
-                                        Team
-                                    </a>
-                                </li>
-                                <li class="mb-0">
-                                    <a href="contact.html">
-                                        Contact Us
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- end info_section -->
 
     <!-- footer section -->
     <footer class="footer_section">

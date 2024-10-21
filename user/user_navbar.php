@@ -57,141 +57,115 @@ include('../header.php');
         overflow-x: hidden;
     }
 
-    s .user-btn {
-        background-color: black;
-        /* Set the background color */
+    .user_tab {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    /* User button */
+    .user-btn {
+        background-color: transparent;
+        border: none;
+
         border-radius: 50%;
-        /* Make it round */
-        height: 60px;
-        width: 70px;
-        padding: 5px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border: none;
-        /* Remove border */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s ease;
-        /* Smooth hover effect */
+        transition: transform 0.3s ease;
     }
 
     .user-btn:hover {
         transform: scale(1.05);
-        /* Slight zoom on hover */
     }
 
+    /* User photo styling */
     .user_photo img {
         border-radius: 50%;
         height: 50px;
         width: 50px;
         object-fit: cover;
-        /* Keep the aspect ratio */
-        border: 2px solid white;
-        /* Add a border around the image */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        /* Small shadow for better focus */
+        border: 2px solid #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
-    /* General dropdown menu styling */
+    /* Dropdown menu styling */
     .dropdown-menu {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         width: 200px;
-        transform-origin: top right;
-        transition: all 0.3s ease;
     }
 
-    /* Dropdown items */
-    .dropdown-item {
-        padding: 10px 15px;
-        color: #333;
-        text-decoration: none;
-        display: block;
-        transition: background-color 0.2s;
+    /* Dropdown container */
+    .dropdown_container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px;
     }
 
-    .dropdown-item:hover {
-        background-color: #f1f1f1;
-        color: #007bff;
-    }
 
-    /* Log out button */
-    .logout-btn {
-        background: none;
+
+    #dropdownMenuButton1 {
+        background-color: transparent;
+        height: 50px;
+        border-radius: 50%;
         border: none;
-        color: #007bff;
+    }
+
+    #dropdown>div>li:nth-child(1)>form>button {
         width: 100%;
-        text-align: left;
-        padding: 10px 15px;
-        transition: background-color 0.2s;
+        height: 35px;
+        text-align: start;
+        border: none;
     }
 
-    .logout-btn:hover {
-        background-color: #f1f1f1;
-        color: #dc3545;
-        cursor: pointer;
+    #dropdown>div>li:nth-child(1)>form>button:hover {
+        background-color: yellow;
+        width: 100%;
+        height: 35px;
+        text-align: start;
+        border: none;
     }
 
-    /* Responsive adjustments */
+    #dropdown>div>li:nth-child(2)>form>button {
+        width: 100%;
+        height: 35px;
+        text-align: start;
+        border: none;
+    }
+
+    #dropdown>div>li:nth-child(2)>form>button:hover {
+        background-color: yellow;
+        width: 100%;
+        height: 35px;
+        text-align: start;
+        border-radius: 8px;
+        border: none;
+    }
+
+    /* Responsive design */
     @media (max-width: 768px) {
         .dropdown-menu {
             width: 100%;
         }
 
-        .dropdown-item,
-        .logout-btn {
-            padding: 12px;
-            font-size: 16px;
-        }
-
         .user-btn {
-            width: 60px;
             height: 60px;
+            width: 60px;
         }
 
         .user_photo img {
             height: 45px;
             width: 45px;
         }
+
+        .dropdown-item {
+            padding: 12px;
+            font-size: 18px;
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*  */
 
 
     .layout_padding {
@@ -1053,10 +1027,11 @@ include('../header.php');
     }
 
     .info_section {
-        background-color: rgb(184, 135, 0);
+        background-color: rgb(59, 59, 59);
         color: #ffffff;
         padding: 45px 0 10px 0;
     }
+
 
     .info_section h5 {
         margin-bottom: 20px;
@@ -1283,6 +1258,9 @@ include('../header.php');
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="user_map.php"> Map </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="user_booking.php"> Booking </a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" href="user_contact.php">Contact Us</a>

@@ -165,9 +165,6 @@ include('user_navbar.php');
             </div>
         </div>
     </section>
-
-    <!-- service section ends -->
-
     <!-- footer section -->
     <footer class="footer_section">
         <div class="container">

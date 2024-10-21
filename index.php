@@ -1,6 +1,6 @@
 <?php
 // Include your database connection file
-include 'connection.php';
+include ('connection.php');
 include ("index-css.php");
 
 
@@ -94,7 +94,6 @@ $result_about = $conn->query($sql_about);
                         echo '<h3>' . $row["services_inclusion"] . '</h3>';
                         echo '<p> Starts at ₱ 1600</p>';
                         echo '<div class="btn-box">';
-                        echo '<a href="login.php" class="btn1">Book Now</a>';
                         echo '</div>';
                         echo '</div>';
                         echo '</div>';
@@ -244,11 +243,7 @@ $result_about = $conn->query($sql_about);
                     </div>
                 </div>
             </div>
-            <div class="btn-box">
-                <a href="">
-                    Read More
-                </a>
-            </div>
+
         </div>
     </section>
 
@@ -280,9 +275,6 @@ $result_about = $conn->query($sql_about);
                             $conn->close();
                             ?>
                         </p>
-                        <a href="about.html" class="">
-                            Read More
-                        </a>
                     </div>
                 </div>
                 <div class="col-md-6 px-0">
@@ -296,66 +288,9 @@ $result_about = $conn->query($sql_about);
 
     <!-- about section ends -->
 
-    <!-- team section -->
-
-
 
     <!-- end team section -->
 
-    <!-- contact section -->
-    <section class="contact_section mt-5">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-6 px-0">
-                    <div class="img-box ">
-                        <img src="images/bg3.jpg" class="box_img" alt="about img">
-                    </div>
-                </div>
-                <div class="col-md-5 mx-auto">
-                    <div class="form_container">
-                        <div class="heading_container heading_center">
-                            <h2>Get In Touch</h2>
-                        </div>
-                        <form action="">
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <input type="text" class="form-control" placeholder="Your Name" />
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-lg-6">
-                                    <input type="text" class="form-control" placeholder="Phone Number" />
-                                </div>
-                                <div class="form-group col-lg-6">
-                                    <select name="" id="" class="form-control wide">
-                                        <option value="">Select Service</option>
-                                        <option value="">Service 1</option>
-                                        <option value="">Service 2</option>
-                                        <option value="">Service 3</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <input type="email" class="form-control" placeholder="Email" />
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col">
-                                    <input type="text" class="message-box form-control" placeholder="Message" />
-                                </div>
-                            </div>
-                            <div class="btn_box">
-                                <button>
-                                    SEND
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <section class="info_section ">
         <div class="container">
             <div class="info_top">
@@ -431,40 +366,6 @@ $result_about = $conn->query($sql_about);
                                 Lorem
                                 Ipsum, you need to be sure
                             </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6">
-                        <div class="">
-                            <h5>
-                                Useful links
-                            </h5>
-                            <ul class="info_menu">
-                                <li>
-                                    <a href="index.html">
-                                        Home
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="about.html">
-                                        About
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="service.html">
-                                        Services
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="team.html">
-                                        Team
-                                    </a>
-                                </li>
-                                <li class="mb-0">
-                                    <a href="contact.html">
-                                        Contact Us
-                                    </a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                 </div>

@@ -1,10 +1,12 @@
+<?php
+include ("header.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>css</title>
+
     <style>
     /* Styling for the user tab and dropdown */
     .user_tab {
@@ -1077,7 +1079,7 @@
     }
 
     .info_section {
-        background-color: rgb(184, 135, 0);
+        background-color: rgb(59, 59, 59);
         color: #ffffff;
         padding: 45px 0 10px 0;
     }
