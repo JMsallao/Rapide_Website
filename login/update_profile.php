@@ -21,12 +21,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $barangay = mysqli_real_escape_string($conn, $_POST['barangay']);
     $bday = mysqli_real_escape_string($conn, $_POST['bday']);
 
+    // Define a separate upload directory (outside login folder)
+    $upload_dir = '../user/uploads/profile_pics';  // Go up one level and into uploads/profile_pics/
+
     // Handle profile picture upload if a file is provided
     $profile_pic = '';
 
-    if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
-        // Define the directory to upload to
-        $upload_dir = 'uploads/';
+    if (isset($_FILES['pic']) && $_FILES['pic']['error'] === UPLOAD_ERR_OK) {
+        // Check if the uploads directory exists, create it if not
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0755, true);
+        }
+
         // Generate a unique filename based on user ID and current timestamp
         $filename = $user_id . '_' . time() . '_' . basename($_FILES['profile_pic']['name']);
         $target_file = $upload_dir . $filename;
@@ -47,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 phone = '$phone', 
                 province = '$province', 
                 city = '$city', 
-                barangay = '$barangay', 
+                brgy = '$barangay', 
                 bday = '$bday'";
 
     // Append the profile picture path if it was uploaded
@@ -60,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Execute the query
     if (mysqli_query($conn, $query)) {
-        echo '<script>alert("Profile updated successfully."); window.location.href = "user_homepage.php";</script>';
+        echo '<script>alert("Profile updated successfully."); window.location.href = "../user/user_home.php";</script>';
     } else {
         echo "Error updating profile: " . mysqli_error($conn);
     }
