@@ -1,3 +1,18 @@
+<?php
+include('../connection.php');
+// Make sure session is started and variables are set
+session_start();
+
+if (isset($_SESSION['id'])) {
+    $admin_id = $_SESSION['id'];
+} else {
+    // Handle the case where the user is not logged in, redirect or show an error
+    echo "User is not logged in";
+    exit;
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -81,16 +96,6 @@
 <body id="page-top">
 
     <body class="position-relative">
-
-        <div>
-            <a class="chat d-flex justify-content-center align-items-center pb-1"
-                href="../chat_system\user\chatroom.php?id=3">
-                <!-- <button value=" <?php echo $row['chatroomid']; ?>" type="button" class="btn  border-0" -->
-                <!-- data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top"> -->
-                <img src="../images/chat.png" />
-                <!-- </button> -->
-            </a>
-        </div>
 
         <!-- Page Wrapper -->
         <div id="wrapper">
@@ -280,68 +285,79 @@
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-envelope fa-fw"></i>
                                     <!-- Counter - Messages -->
-                                    <span class="badge badge-danger badge-counter">7</span>
+                                    <span class="badge badge-danger badge-counter">
+                                        <?php
+                                        $admin_id = $_SESSION['id']; // Admin ID
+
+                                        // Query to count unread messages for the admin
+                                        $count_query = "SELECT COUNT(*) AS unread_count FROM message WHERE recipient = ? AND is_read = 0";
+                                        $stmt = $conn->prepare($count_query);
+                                        $stmt->bind_param("i", $admin_id);
+                                        $stmt->execute();
+                                        $count_result = $stmt->get_result();
+                                        $count_row = $count_result->fetch_assoc();
+                                        $unread_count = $count_row['unread_count'] ?? 0;
+                                        echo $unread_count;
+                                        ?>
+                                    </span>
                                 </a>
+
                                 <!-- Dropdown - Messages -->
                                 <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                     aria-labelledby="messagesDropdown">
                                     <h6 class="dropdown-header">
                                         Message Center
                                     </h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
+
+                                    <?php
+                                    // Query to fetch unread messages for the admin
+                                    $query = "SELECT DISTINCT u.id, u.username, m.message, m.created_at 
+                                            FROM users u 
+                                            JOIN message m ON u.id = m.sender 
+                                            WHERE m.recipient = ? AND m.is_read = 0 
+                                            ORDER BY m.created_at DESC 
+                                            LIMIT 5"; // Limit to 5 recent unread messages
+                                            
+                                    $stmt = $conn->prepare($query);
+                                    $stmt->bind_param("i", $admin_id);
+                                    $stmt->execute();
+                                    $result = $stmt->get_result();
+
+                                    if ($result->num_rows > 0) {
+                                        // Display unread messages dynamically
+                                        while ($row = $result->fetch_assoc()) {
+                                            ?>
+                                    <a class="dropdown-item d-flex align-items-center"
+                                        href="../message_kineme/admin_kinems/eto_again.php?user_id=<?php echo $row['id']; ?>">
                                         <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="...">
+                                            <img class="rounded-circle" src="img/default_profile.svg" alt="...">
                                             <div class="status-indicator bg-success"></div>
                                         </div>
                                         <div class="font-weight-bold">
-                                            <div class="text-truncate">Hi there! I am wondering if you can help me with
-                                                a
-                                                problem I've been having.</div>
-                                            <div class="small text-gray-500">Emily Fowler · 58m</div>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="...">
-                                            <div class="status-indicator"></div>
-                                        </div>
-                                        <div>
-                                            <div class="text-truncate">I have the photos that you ordered last month,
-                                                how
-                                                would you like them sent to you?</div>
-                                            <div class="small text-gray-500">Jae Chun · 1d</div>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="...">
-                                            <div class="status-indicator bg-warning"></div>
-                                        </div>
-                                        <div>
-                                            <div class="text-truncate">Last month's report looks great, I am very happy
-                                                with
-                                                the progress so far, keep up the good work!</div>
-                                            <div class="small text-gray-500">Morgan Alvarez · 2d</div>
-                                        </div>
-                                    </a>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image mr-3">
-                                            <img class="rounded-circle"
-                                                src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="...">
-                                            <div class="status-indicator bg-success"></div>
-                                        </div>
-                                        <div>
-                                            <div class="text-truncate">Am I a good boy? The reason I ask is because
-                                                someone
-                                                told me that people say this to all dogs, even if they aren't good...
+                                            <div class="text-truncate"><?php echo htmlspecialchars($row['message']); ?>
                                             </div>
-                                            <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                                            <div class="small text-gray-500">
+                                                <?php echo htmlspecialchars($row['username']); ?> ·
+                                                <?php echo date('H:i A', strtotime($row['created_at'])); ?></div>
                                         </div>
                                     </a>
-                                    <a class="dropdown-item text-center small text-gray-500" href="#">Read More
-                                        Messages</a>
+                                    <?php
+                                        }
+                                    } else {
+                                        // If there are no unread messages
+                                        echo '<a class="dropdown-item d-flex align-items-center" href="#">';
+                                        echo '<div class="font-weight-bold text-center">No unread messages</div>';
+                                        echo '</a>';
+                                    }
+
+                                    $stmt->close();
+                                    ?>
+
+                                    <a class="dropdown-item text-center small text-gray-500"
+                                        href="../message_kineme/admin_kinems/inbox_chariz.php">GO TO MESSAGES</a>
                                 </div>
                             </li>
+
 
                             <div class="topbar-divider d-none d-sm-block"></div>
 

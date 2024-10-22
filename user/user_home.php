@@ -45,7 +45,6 @@ $result_about = $conn->query($sql_about);
     <!-- font awesome style -->
     <link href="../css/font-awesome.min.css" rel="stylesheet" />
 
-    <!-- Custom styles for this template -->
 
     <!-- responsive style -->
     <link href="../css/responsive.css" rel="stylesheet" />
@@ -149,6 +148,8 @@ $result_about = $conn->query($sql_about);
         border: none;
     }
 
+
+
     /* Responsive design */
     @media (max-width: 768px) {
         .dropdown-menu {
@@ -209,7 +210,7 @@ $result_about = $conn->query($sql_about);
 
     <div>
         <a class="chat d-flex justify-content-center align-items-center pb-1"
-            href="../chat_system\user\chatroom.php?id=3">
+            href="../message_kineme/user_ansya/chat_kineme.php">
             <!-- <button value=" <?php echo $row['chatroomid']; ?>" type="button" class="btn  border-0" -->
             <!-- data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top"> -->
             <img src="../images/chat.png" />
