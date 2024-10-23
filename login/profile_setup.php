@@ -80,6 +80,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         color: #333;
         text-align: center;
         margin-bottom: 20px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
 
     /* Profile picture styling */
@@ -89,7 +90,8 @@ if ($result && mysqli_num_rows($result) > 0) {
         border-radius: 50%;
         border: 3px solid #ddd;
         max-width: 100%;
-        height: auto;
+        height: 100px;
+        width: 100px;
     }
 
     /* Input fields and dropdowns styling */
@@ -110,7 +112,7 @@ if ($result && mysqli_num_rows($result) > 0) {
 
     /* Submit button styling */
     .btn-primary {
-        background-color: #007bff;
+        background-color: grey;
         color: #fff;
         padding: 10px 20px;
         border-radius: 5px;
@@ -122,7 +124,8 @@ if ($result && mysqli_num_rows($result) > 0) {
     }
 
     .btn-primary:hover {
-        background-color: #0056b3;
+        background-color: rgb(192, 163, 0);
+        color: black;
     }
 
     /* Adjusting image and input field alignment */
@@ -204,6 +207,13 @@ if ($result && mysqli_num_rows($result) > 0) {
         <!-- Profile Picture -->
         <!-- Profile Picture -->
         <div class="mb-3">
+<<<<<<< HEAD
+            <?php if (!empty($profile_pic)): ?>
+            <img src="<?php echo $profile_pic; ?>" alt="Profile Picture" width="150">
+            <?php else: ?>
+            <img src="../images/profile-user.png" alt="Default Profile Picture" width="150">
+            <?php endif; ?>
+=======
             <?php
             if (!empty($pic)) {
                 $profilePicPath = '../user/' . $pic;
@@ -212,42 +222,51 @@ if ($result && mysqli_num_rows($result) > 0) {
                 echo '<img src="default_pic.jpg" alt="Default Profile Picture" width="150">';
             }
             ?>
+>>>>>>> 389d98dd801711220654f3ba2e764b23636498c8
+        </div>
+        <div class="mb-3">
+            <label for="profile_pic" class="form-label">Upload Profile Picture</label>
+            <input type="file" class="form-control" id="profile_pic" name="profile_pic" accept="image/*">
         </div>
 
         <form action="update_profile.php" method="POST" enctype="multipart/form-data">
             <!-- Personal Information Fields -->
-            <div class="mb-3">
-                <label for="fname" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="fname" name="fname" value="<?php echo $fname; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="lname" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="lname" name="lname" value="<?php echo $lname; ?>" required>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>" readonly
-                    required>
-            </div>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>"
-                    required>
-            </div>
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $phone; ?>" required>
-            </div>
+            <div class="row">
+                <div class="col-6">
+                    <label for="fname" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="fname" name="fname" value="<?php echo $fname; ?>"
+                        required>
+                </div>
+                <div class="col-6">
+                    <label for="lname" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="lname" name="lname" value="<?php echo $lname; ?>"
+                        required>
+                </div>
 
-            <!-- Address Fields -->
-            <div class="mb-3">
-                <label for="province" class="form-label">Province</label>
-                <select class="form-control" id="province" name="province" required>
-                    <option value="Cavite" <?php if ($province == 'Cavite') echo 'selected'; ?>>Cavite</option>
-                </select>
-            </div>
+                <div class="col-6">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="<?php echo $email; ?>"
+                        readonly required>
+                </div>
+                <div class="col-6">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username"
+                        value="<?php echo $username; ?>" required>
+                </div>
+                <div class="col-6">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $phone; ?>"
+                        required>
+                </div>
 
-            <?php
+                <!-- Address Fields -->
+                <div class="col-6">
+                    <label for="province" class="form-label">Province</label>
+                    <select class="form-control" id="province" name="province" required>
+                        <option value="Cavite" <?php if ($province == 'Cavite') echo 'selected'; ?>>Cavite</option>
+                    </select>
+                </div>
+                <?php
             // Fetch city list from the database
             $query = "SELECT id, city_name FROM city_list";
             $result = mysqli_query($conn, $query);
@@ -256,11 +275,11 @@ if ($result && mysqli_num_rows($result) > 0) {
             $city = isset($user_data['city']) ? $user_data['city'] : '';
             ?>
 
-            <div class="mb-3">
-                <label for="city" class="form-label">City/Municipality</label>
-                <select class="form-control" id="city" name="city" required>
-                    <option value="">Select City/Municipality</option>
-                    <?php
+                <div class="col-7">
+                    <label for="city" class="form-label">City/Municipality</label>
+                    <select class="form-control" id="city" name="city" required>
+                        <option value="">Select City/Municipality</option>
+                        <?php
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
                             $city_id = $row['id'];
@@ -271,14 +290,14 @@ if ($result && mysqli_num_rows($result) > 0) {
                         }
                     }
                     ?>
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label for="barangay" class="form-label">Barangay</label>
-                <select class="form-control" id="barangay" name="barangay" required>
-                    <option value="">Select Barangay</option>
-                </select>
+                    </select>
+                </div>
+                <div class="col-5">
+                    <label for="barangay" class="form-label">Barangay</label>
+                    <select class="form-control" id="barangay" name="barangay" required>
+                        <option value="">Select Barangay</option>
+                    </select>
+                </div>
             </div>
 
             <!-- Birthday Field -->
@@ -288,10 +307,14 @@ if ($result && mysqli_num_rows($result) > 0) {
             </div>
 
             <!-- Profile Picture Upload -->
+<<<<<<< HEAD
+
+=======
             <div class="mb-3">
                 <label for="profile_pic" class="form-label">Upload Profile Picture</label>
                 <input type="file" class="form-control" id="profile_pic" name="pic" accept="image/*">
             </div>
+>>>>>>> 389d98dd801711220654f3ba2e764b23636498c8
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">Submit</button>

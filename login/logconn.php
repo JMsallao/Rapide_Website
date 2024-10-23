@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION["id"] = $row['id'];
                 echo '<script type="text/javascript">
                 alert("Welcome");
-                window.location = "../user/user_home.php";
+                window.location = "../user/u-homepage.php";
                 </script>';
                 exit();
             } else {
