@@ -19,7 +19,7 @@ $province = '';
 $city = '';
 $barangay = '';
 $bday = '';
-$profile_pic = '';
+$pic = '';
 
 // Fetch the user data from the database if the user is logged in
 $query = "SELECT * FROM users WHERE id = '$user_id'";
@@ -38,9 +38,9 @@ if ($result && mysqli_num_rows($result) > 0) {
     $phone = $user_data['phone'];
     $province = isset($user_data['province']) ? $user_data['province'] : '';
     $city = isset($user_data['city']) ? $user_data['city'] : '';
-    $barangay = isset($user_data['barangay']) ? $user_data['barangay'] : '';
+    $barangay = isset($user_data['brgy']) ? $user_data['brgy'] : '';
     $bday = isset($user_data['bday']) ? $user_data['bday'] : '';
-    $profile_pic = isset($user_data['profile_pic']) ? $user_data['profile_pic'] : '';
+    $pic = isset($user_data['pic']) ? $user_data['pic'] : '';
 } else {
     // If no user found, show a message or handle the case appropriately
     die("User not found in the database.");
@@ -205,12 +205,24 @@ if ($result && mysqli_num_rows($result) > 0) {
         <h2>Set Up Your Profile</h2>
 
         <!-- Profile Picture -->
+        <!-- Profile Picture -->
         <div class="mb-3">
+<<<<<<< HEAD
             <?php if (!empty($profile_pic)): ?>
             <img src="<?php echo $profile_pic; ?>" alt="Profile Picture" width="150">
             <?php else: ?>
             <img src="../images/profile-user.png" alt="Default Profile Picture" width="150">
             <?php endif; ?>
+=======
+            <?php
+            if (!empty($pic)) {
+                $profilePicPath = '../user/' . $pic;
+                echo '<img src="' . htmlspecialchars($profilePicPath) . '" alt="Profile Picture" width="150">';
+            } else {
+                echo '<img src="default_pic.jpg" alt="Default Profile Picture" width="150">';
+            }
+            ?>
+>>>>>>> 389d98dd801711220654f3ba2e764b23636498c8
         </div>
         <div class="mb-3">
             <label for="profile_pic" class="form-label">Upload Profile Picture</label>
@@ -295,7 +307,14 @@ if ($result && mysqli_num_rows($result) > 0) {
             </div>
 
             <!-- Profile Picture Upload -->
+<<<<<<< HEAD
 
+=======
+            <div class="mb-3">
+                <label for="profile_pic" class="form-label">Upload Profile Picture</label>
+                <input type="file" class="form-control" id="profile_pic" name="pic" accept="image/*">
+            </div>
+>>>>>>> 389d98dd801711220654f3ba2e764b23636498c8
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary">Submit</button>

@@ -30,21 +30,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_FILES['pic']) && $_FILES['pic']['error'] === UPLOAD_ERR_OK) {
         // Check if the uploads directory exists, create it if not
         if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0755, true);
+            if (!mkdir($upload_dir, 0755, true)) {
+                die("Failed to create upload directory: $upload_dir");
+            }
         }
-
+    
         // Generate a unique filename based on user ID and current timestamp
-        $filename = $user_id . '_' . time() . '_' . basename($_FILES['profile_pic']['name']);
-        $target_file = $upload_dir . $filename;
-
+        $filename = $user_id . '_' . time() . '_' . basename($_FILES['pic']['name']);
+        $target_file = $upload_dir . '/' . $filename;
+    
         // Move the uploaded file to the target directory
-        if (move_uploaded_file($_FILES['profile_pic']['tmp_name'], $target_file)) {
-            $profile_pic = $target_file; // Save the file path for updating the user profile
+        if (move_uploaded_file($_FILES['pic']['tmp_name'], $target_file)) {
+            $profile_pic = 'uploads/profile_pics/' . $filename; // Save relative path for the user profile
         } else {
-            echo '<script>alert("Failed to upload profile picture.");</script>';
+            die("Failed to move uploaded file to $target_file. Check directory permissions.");
+        }
+    } else {
+        if ($_FILES['pic']['error'] !== UPLOAD_ERR_NO_FILE) {
+            die("Error with file upload: " . $_FILES['pic']['error']);
         }
     }
-
+    
     // Prepare the SQL update query
     $query = "UPDATE users SET 
                 fname = '$fname', 
@@ -58,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Append the profile picture path if it was uploaded
     if (!empty($profile_pic)) {
-        $query .= ", profile_pic = '$profile_pic'";
+        $query .= ", pic = '$profile_pic'";
     }
 
     // Finalize the query with the user ID condition
