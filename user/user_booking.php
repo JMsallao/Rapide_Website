@@ -1,5 +1,5 @@
 <?php
-
+include ('../connection.php');
 include('../header.php');
 include('user_navbar.php');
 
@@ -57,112 +57,42 @@ include('user_navbar.php');
                 </p>
             </div>
             <div class="service_container">
-                <div class="carousel-wrap ">
-                    <div class="service_owl-carousel owl-carousel">
-                        <div class="item">
-                            <div class="box ">
-                                <div class="img-box">
-                                    <img src="images/s1.png" alt="" />
+            <div class="carousel-wrap ">
+                <div class="service_owl-carousel owl-carousel">
+                    <?php
+                    // Define the categories and corresponding tables
+                    $categories = [
+                        'PMS Package' => ['package_list'],
+                        'Periodic Services' => ['service_list'],
+                        'AC Services & Repair' => ['ac_service'],
+                        'Brakes Services' => ['brake_service', 'brakes_table']
+                    ];
+
+                    // Loop through each category and display its name
+                    foreach ($categories as $category_name => $tables) {
+                        echo "
+                        <div class='item'>
+                            <div class='box'>
+                                <div class='img-box'>
+                                    <img src='images/default_service.png' alt='' />
                                 </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        Home Welding
-                                    </h5>
-                                    <p>
-                                        when looking at its layout. The point of using Lorem Ipsum is
-                                        that it has a more-or-less normal
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="box ">
-                                <div class="img-box">
-                                    <img src="images/s4.png" alt="" />
-                                </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        Machine Welding
-                                    </h5>
-                                    <p>
-                                        when looking at its layout. The point of using Lorem Ipsum is
-                                        that it has a more-or-less normal
-                                    </p>
+                                <div class='detail-box'>
+                                    <h5>$category_name</h5>
+                                    <p>Explore the $category_name offered by our shop. Click below for more details.</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="box ">
-                                <div class="img-box">
-                                    <img src="images/s6.png" alt="" />
-                                </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        Car Welding
-                                    </h5>
-                                    <p>
-                                        when looking at its layout. The point of using Lorem Ipsum is
-                                        that it has a more-or-less normal
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="box ">
-                                <div class="img-box">
-                                    <img src="images/s1.png" alt="" />
-                                </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        Home Welding
-                                    </h5>
-                                    <p>
-                                        when looking at its layout. The point of using Lorem Ipsum is
-                                        that it has a more-or-less normal
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="box ">
-                                <div class="img-box">
-                                    <img src="images/s4.png" alt="" />
-                                </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        Machine Welding
-                                    </h5>
-                                    <p>
-                                        when looking at its layout. The point of using Lorem Ipsum is
-                                        that it has a more-or-less normal
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="box ">
-                                <div class="img-box">
-                                    <img src="images/s6.png" alt="" />
-                                </div>
-                                <div class="detail-box">
-                                    <h5>
-                                        Car Welding
-                                    </h5>
-                                    <p>
-                                        when looking at its layout. The point of using Lorem Ipsum is
-                                        that it has a more-or-less normal
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        ";
+                    }
+                    ?>
                 </div>
             </div>
-            <div class="btn-box">
-                <a href="">
-                    Read More
-                </a>
-            </div>
+        </div>
+        <div class="btn-box">
+            <a href="../booking/service_list.php?; ?>">
+                Read More
+            </a>
+        </div>
         </div>
     </section>
     <!-- footer section -->
