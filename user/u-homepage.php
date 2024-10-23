@@ -194,7 +194,7 @@ $result_about = $conn->query($sql_about);
 
     <div class="hero_area">
         <div class="bg-box">
-            <img src="../images\hero-bg.jpg" alt="">
+            <img src="../images/bg2.jpg" alt="">
         </div>
         <!-- header section strats -->
         <header class="header_section">
@@ -219,13 +219,13 @@ $result_about = $conn->query($sql_about);
                                         class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="u-menu.php">Service</a>
+                                <a class="nav-link" href="service.php">Service</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="about.php">About</a>
+                                <a class="nav-link" href="map.php">Map</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="book.php">Book Table</a>
+                                <a class="nav-link" href="book.php">Book</a>
                             </li>
                         </ul>
                         <div class="user_tab">
@@ -234,14 +234,14 @@ $result_about = $conn->query($sql_about);
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user">
                                         <div class="user_photo">
-                                            <img src="../profile_picture/<?php echo $row['image_file'] ?>" alt="">
+                                            <img src="../images/profile-user.png" alt="">
                                         </div>
                                     </div>
                                 </button>
                                 <ul id="dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <div class="dropdown_container">
                                         <li>
-                                            <form action="user_profile.php" method="post">
+                                            <form action="../login\profile_setup.php" method="post">
                                                 <button>Profile</button>
                                             </form>
                                         </li>
@@ -369,7 +369,7 @@ $result_about = $conn->query($sql_about);
                                     <span>15%</span> Off
                                 </h6>
                                 <a href="">
-                                    Order Now <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                                    Book Now <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
                                         xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                         viewBox="0 0 456.029 456.029" style="enable-background:new 0 0 456.029 456.029;"
                                         xml:space="preserve">

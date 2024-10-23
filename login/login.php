@@ -17,7 +17,7 @@
     <style>
     /* General body and text settings */
     body {
-        background: url('login_bg.png') no-repeat center center fixed;
+        background: url('../images/login_bg.png') no-repeat center center fixed;
         background-size: cover;
         font-family: Arial, sans-serif;
         display: flex;
@@ -35,7 +35,7 @@
 
 
     .main_container {
-        background: url('bg1.jpg') no-repeat center center;
+        background: url('../images/bg1.jpg') no-repeat center center;
         background-size: cover;
         width: 100%;
         max-width: 1200px;

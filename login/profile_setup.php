@@ -207,22 +207,22 @@ if ($result && mysqli_num_rows($result) > 0) {
         <!-- Profile Picture -->
         <!-- Profile Picture -->
         <div class="mb-3">
-<<<<<<< HEAD
-            <?php if (!empty($profile_pic)): ?>
+
+            <!-- <?php if (!empty($profile_pic)): ?>
             <img src="<?php echo $profile_pic; ?>" alt="Profile Picture" width="150">
             <?php else: ?>
             <img src="../images/profile-user.png" alt="Default Profile Picture" width="150">
-            <?php endif; ?>
-=======
+            <?php endif; ?> -->
+
             <?php
             if (!empty($pic)) {
                 $profilePicPath = '../user/' . $pic;
                 echo '<img src="' . htmlspecialchars($profilePicPath) . '" alt="Profile Picture" width="150">';
             } else {
-                echo '<img src="default_pic.jpg" alt="Default Profile Picture" width="150">';
+                echo '<img src="../images/profile-user.png" alt="Default Profile Picture" width="150">';
             }
             ?>
->>>>>>> 389d98dd801711220654f3ba2e764b23636498c8
+
         </div>
         <div class="mb-3">
             <label for="profile_pic" class="form-label">Upload Profile Picture</label>
@@ -307,18 +307,15 @@ if ($result && mysqli_num_rows($result) > 0) {
             </div>
 
             <!-- Profile Picture Upload -->
-<<<<<<< HEAD
-
-=======
-            <div class="mb-3">
+            <<<<<<< HEAD=======<div class="mb-3">
                 <label for="profile_pic" class="form-label">Upload Profile Picture</label>
                 <input type="file" class="form-control" id="profile_pic" name="pic" accept="image/*">
-            </div>
->>>>>>> 389d98dd801711220654f3ba2e764b23636498c8
+    </div>
+    >>>>>>> 389d98dd801711220654f3ba2e764b23636498c8
 
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

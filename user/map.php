@@ -200,10 +200,10 @@
                                         class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="u-menu.php">Menu</a>
+                                <a class="nav-link" href="service.php">Service</a>
                             </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="about.php">About</a>
+                                <a class="nav-link" href="Map.php">Map</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="book.php">Book Table</a>
