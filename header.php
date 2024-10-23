@@ -11,6 +11,7 @@
     <meta name="author" content="" />
     <link rel="shortcut icon" href="../images/R.png" type="image/x-icon">
     <title>Rapide</title>
+    <link rel="stylesheet" href="css\css.css" />
     <link rel="stylesheet" href="css\bootstrap.min.css" />
     <script src="js\bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"

@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Execute the query
     if (mysqli_query($conn, $query)) {
-        echo '<script>alert("Profile updated successfully."); window.location.href = "../user/user_home.php";</script>';
+        echo '<script>alert("Profile updated successfully."); window.location.href = "../login/login.php";</script>';
     } else {
         echo "Error updating profile: " . mysqli_error($conn);
     }
