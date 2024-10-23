@@ -2,6 +2,25 @@
 include('../connection.php');
 include('../sessioncheck.php');
 include('../header.php');
+
+// Ensure the session user ID is set correctly
+if (isset($_SESSION['id'])) {
+    $user_id = $_SESSION['id'];
+} else {
+    die("User ID is not set in the session.");
+}
+
+// Fetch user data from the database
+$query = "SELECT * FROM users WHERE id = '$user_id'";
+$result = mysqli_query($conn, $query);
+
+// Check if the query succeeded and fetch the user's data
+if ($result && mysqli_num_rows($result) > 0) {
+    $row = mysqli_fetch_assoc($result);
+} else {
+    die("User data could not be found.");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -1174,12 +1193,7 @@ include('../header.php');
 <body>
 
     <body>
-        <?php
-    $sql = "SELECT * FROM usertable WHERE uname='" . $_SESSION['uname'] . "'";
-    $result = $conn->query($sql);
 
-    while ($row = $result->fetch_assoc()) {
-    ?>
         <div class="hero_area">
             <div class="hero_bg_box">
                 <img src="../images/hero-bg.jpg" alt="">
@@ -1214,15 +1228,31 @@ include('../header.php');
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user">
-                                        <div class="user_photo">
-                                            <img src="../profile_picture/<?php echo $row['image_file'] ?>" alt="">
-                                        </div>
+                                    <div class="user_photo">
+                                        <?php
+                                        
+                                        // Check if the profile picture exists and is not empty
+                                        if (!empty($row['pic'])) {
+                                            $profilePicPath = htmlspecialchars($row['pic']);
+                                            
+                                            // Display the profile picture
+                                            echo '<img src="' . $profilePicPath . '" alt="User Profile Picture">';
+                                        } else {
+                                            // Debugging: Inform that no profile picture is found
+                                            echo "<p>Debug: No profile picture found, using default</p>";
+                                            
+                                            // Display a default placeholder if no profile picture is found
+                                            echo '<img src="../uploads/profile_pics/default.png" alt="Default Profile Picture">';
+                                        }
+                                        ?>
+                                    </div>
+
                                     </div>
                                 </button>
                                 <ul id="dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <div class="dropdown_container">
                                         <li>
-                                            <form action="user_profile.php" method="post">
+                                            <form action="../login/profile_setup.php" method="post">
                                                 <button>Profile</button>
                                             </form>
                                         </li>
@@ -1269,7 +1299,6 @@ include('../header.php');
                                 </ul>
                             </div>
                         </nav>
-                        <?php } ?>
 
                     </div>
                 </div>
