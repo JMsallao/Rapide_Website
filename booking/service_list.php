@@ -1,68 +1,76 @@
 <?php
 include ('../connection.php');
 include('../header.php');
-include('../user/user_navbar.php');
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .category-nav {
-            margin-bottom: 20px;
-        }
-        .category-nav a {
-            margin-right: 10px;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            color: black;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .category-nav a.active {
-            background-color: #ffc107;
-            color: white;
-        }
-        .service-item {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .service-item img {
-            max-width: 100px;
-            height: auto;
-        }
-        .service-item-details {
-            flex-grow: 1;
-            margin-left: 20px;
-        }
-        .add-to-cart-btn {
-            background-color: #d9534f;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            text-align: center;
-            cursor: pointer;
-        }
-        .add-to-cart-btn:hover {
-            background-color: #c9302c;
-        }
+    .category-nav {
+        margin-bottom: 20px;
+    }
+
+    .category-nav a {
+        margin-right: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        color: black;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .category-nav a.active {
+        background-color: #ffc107;
+        color: white;
+    }
+
+    .service-item {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .service-item img {
+        max-width: 100px;
+        height: auto;
+    }
+
+    .service-item-details {
+        flex-grow: 1;
+        margin-left: 20px;
+    }
+
+    .add-to-cart-btn {
+        background-color: #d9534f;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .add-to-cart-btn:hover {
+        background-color: #c9302c;
+    }
     </style>
 </head>
+
 <body>
     <div class="container mt-5">
         <h2 class="text-center">Services List</h2>
-        
+
         <!-- Category Navigation -->
         <div class="category-nav text-center">
             <?php
@@ -129,4 +137,5 @@ include('../user/user_navbar.php');
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
