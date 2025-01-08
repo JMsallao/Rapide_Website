@@ -5,270 +5,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Sign Up</title>
-    <link rel="stylesheet" href="login\login3.css" />
-    <link rel="stylesheet" href="css\bootstrap.min.css" />
-    <script src="js\bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../images\LogoRapide.png" type="image/x-icon">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-    /* General body and text settings */
     body {
-        background: url('../images/login_bg.png') no-repeat center center fixed;
+        
+        background: url('../images/bg_05.jpg') no-repeat center center fixed;
         background-size: cover;
-        font-family: Arial, sans-serif;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         margin: 0;
-        height: 100vh;
     }
 
-    .container {
-        display: flex;
-        align-items: end;
-        justify-content: end;
-    }
-
-
-    .main_container {
-        background: url('../images/bg1.jpg') no-repeat center center;
-        background-size: cover;
+    .card {
+        margin-top: 100px;
+        /* Adjust this value as needed */
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 25px;
+        max-width: 400px;
         width: 100%;
-        max-width: 1200px;
-        height: auto;
-        /* Changed to auto for flexibility */
-        padding: 20px;
-        margin: auto;
-        background-color: transparent;
-        flex-wrap: wrap;
-        position: absolute;
-        /* Allows wrapping on smaller screens */
+        margin-bottom: 50px;
     }
 
-    /* Login form container */
-    .login-form {
+
+    .nav-tabs {
         display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
-        width: 100%;
-        /* Set to 100% for flexibility */
-        max-width: 500px;
-        background-color: rgba(167, 167, 167, 0.5);
-        padding: 20px;
+        margin-bottom: 20px;
+
         border-radius: 10px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    }
-
-    /* Image container for the right side */
-    .image-container {
-        width: 100%;
-        /* Set to 100% for flexibility */
-        height: auto;
-        /* Allows for responsive height */
-    }
-
-    .image-container img {
-        width: 100%;
-        /* Full width for images */
-        height: auto;
-        /* Maintains aspect ratio */
-        object-fit: cover;
-    }
-
-    /* Form styling */
-    .login-form h1 {
-        text-align: center;
-        width: 100%;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .login-form .form-group {
-        width: 100%;
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .login-form input,
-    .login-form button {
-        width: 90%;
         padding: 10px;
-        border-radius: 8px;
-        margin: 5px 0;
-        border: none;
-        outline: none;
+ 
     }
 
-    .login-form button {
-        background-color: rgb(243, 212, 72);
-        color: black;
-        padding: 10px;
-        border-radius: 5px;
-        cursor: pointer;
-        width: 70%;
-        /* Full width on smaller screens */
-        transition: background-color 0.3s ease;
-    }
-
-    /* Hover effect */
-    .login-form button:hover {
-        background-color: rgb(255, 17, 0);
-        color: rgb(255, 255, 255);
-    }
-
-    /* Offcanvas styling */
-    .offcanvas-header {
-        background-color: rgb(61, 61, 61);
-    }
-
-    .offcanvas-title {
-        color: rgb(0, 0, 0);
-    }
-
-    .offcanvas-body {
-        background: url('login_bg.png') no-repeat center center;
-        background-size: cover;
-        color: rgb(0, 0, 0);
-    }
-
-    .offcanvas-body input {
-        background-color: rgb(255, 255, 255);
-        color: black;
-        border: none;
-        padding: 10px;
-        width: 100%;
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    .offcanvas-body button {
-        background-color: rgb(243, 212, 72);
-        color: black;
-        border: none;
+    .nav-tabs .nav-link {
+        color: #495057;
+        border-radius: 20px;
         padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        margin: 0 5px;
     }
 
-    /* Hover effect */
-    .offcanvas-body button:hover {
-        background-color: rgba(255, 0, 0, 0.7);
-        color: rgb(255, 255, 255);
+    .nav-tabs .nav-link:hover {
+        background: #495057;
+        color: white;
+        transition: 0.5s;
+    }
+
+    .nav-tabs .nav-link.active {
+        background-color: #ffee00;
+        color: black;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-group {
+        position: relative;
+    }
+
+    .form-group input {
+        border-radius: 10px;
+        padding: 12px 45px;
+        border: 1px solid #ced4da;
+        transition: all 0.6s;
+        margin-bottom: 20px;
+    }
+
+    .form-group input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+    }
+
+    .form-group i {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        font-size: 18px;
+    }
+
+    .btn-primary {
+        background-color: #ffee00;
+        border-color: #ffee00;
+        color: black;
+        border-radius: 10px;
+        padding: 12px 20px;
+        width: 100%;
+        font-size: 16px;
+        font-weight: bold;
+        transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+        background-color: grey;
+        color: white;
         transform: scale(1.05);
+        transition: 0.5s;
     }
 
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .main_container {
-            flex-direction: column;
-            /* Stack elements */
-            height: auto;
-            /* Allow for dynamic height */
-        }
-
-        .login-form,
-        .image-container {
-            width: 100%;
-            /* Full width on smaller screens */
-        }
-
-        .login-form {
-            margin: 0 0 20px 0;
-            /* Remove margin-left */
-        }
+    .form-title {
+        font-size: 30px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 25px;
+        text-align: center;
+        color: #343a40;
     }
 
-    @media (max-width: 480px) {
-        .login-form {
-            padding: 15px;
-            /* Adjust padding for smaller devices */
-        }
-
-        .login-form button {
-            width: 100%;
-            /* Full width for buttons */
-        }
-
-        .btn-signup {
-            padding: 8px 15px;
-            font-size: 14px;
-        }
+    .form-check-input {
+        width: 10px;
+        height: 20px;
+        margin-right: 10px;
     }
     </style>
-
 </head>
 
 <body>
-    <div class="main_container">
-        <div class="container m-auto">
-            <!-- Login Form -->
-            <form action="logconn.php" method="post" class="login-form">
-                <h1>Login</h1>
-                <div class="form-group">
-                    <input type="text" placeholder="Username" name="uname" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Password" name="password" required>
-                </div>
-                <div class="form-group">
-                    <button type="submit" name="login"> Login</button>
-                </div>
-                <h5>or</h5>
-                <button class="btn-signup" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop"
-                    aria-controls="staticBackdrop">
-                    Sign up here!
-                </button>
-            </form>
-        </div>
-
-        <!-- Offcanvas for Sign Up -->
-        <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop"
-            aria-labelledby="staticBackdropLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="staticBackdropLabel">Sign Up</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    <div class="card">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="signin-tab" href="#" onclick="showForm('signin')">Login</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="signup-tab" href="#" onclick="showForm('signup')">Sign Up</a>
+            </li>
+        </ul>
+        <div id="formContent">
+            <div id="signinForm">
+                <h2 class="form-title">Login</h2>
+                <form action="logconn.php" method="post">
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" placeholder="Username" name="uname" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" placeholder="Password" name="password" required>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary btn-block" name="login">Login</button>
+                    </div>
+                </form>
             </div>
-            <div class="offcanvas-body">
+
+            <div id="signupForm" style="display: none; ">
+                <h2 class="form-title">Sign Up</h2>
                 <form action="regconn.php" method="post">
-                    <div class="container1">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <input type="text" name="fname" placeholder="First Name" />
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <div>
-                                    <div class="form-group">
-                                        <input type="text" name="lname" placeholder="Last Name" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" name="email" placeholder="Email" />
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="uname" placeholder="User Name" />
-                        </div>
-                        <div class="form-group">
-                            <input type="text" name="phone" placeholder="Mobile Number" />
-                        </div>
-                        <div class="form-group">
-                            <input type="password" name="password" placeholder="Password" />
-                        </div>
-                        <div class="form-group">
-                            <input type="password" name="confirm" placeholder="Confirm Password" />
-                        </div>
-                        <div class="form-group">
-                            <button type="submit">Submit</button>
-                        </div>
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" name="fname" placeholder="First Name" required />
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" class="form-control" name="lname" placeholder="Last Name" required />
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" class="form-control" name="email" placeholder="Email" required />
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-user-circle"></i>
+                        <input type="text" class="form-control" name="uname" placeholder="Username" required />
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="text" class="form-control" name="phone" placeholder="Phone" required />
+                    </div>
+
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" name="password" placeholder="Password" required />
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" class="form-control" name="confirm" placeholder="Confirm Password"
+                            required />
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" id="terms" required>
+                        <label class="form-check-label" for="terms">Accept Terms & Conditions</label>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                     </div>
                 </form>
             </div>
@@ -291,7 +217,7 @@
                             <input type="text" class="form-control" id="verification_code" name="verification_code"
                                 placeholder="Enter the code" required>
                         </div>
-                        <div class="form-group mt-3">
+                        <div class="form-group mt-3 text-center">
                             <button type="submit" class="btn btn-primary">Verify</button>
                         </div>
                     </form>
@@ -301,20 +227,23 @@
     </div>
 
     <script>
-    // Automatically open the verification modal after registration
-    <?php
-        if (isset($_SESSION['verification_pending']) && $_SESSION['verification_pending'] === true) {
-            echo 'var verificationModal = new bootstrap.Modal(document.getElementById("verificationModal"));';
-            echo 'verificationModal.show();';
-            unset($_SESSION['verification_pending']);
-        }
-        ?>
+    function showForm(formId) {
+        document.getElementById("signinForm").style.display = formId === "signin" ? "block" : "none";
+        document.getElementById("signupForm").style.display = formId === "signup" ? "block" : "none";
+
+        document.getElementById("signin-tab").classList.toggle("active", formId === "signin");
+        document.getElementById("signup-tab").classList.toggle("active", formId === "signup");
+    }
+
+    // Show verification modal if the session indicates pending verification
+    <?php if (isset($_SESSION['verification_pending']) && $_SESSION['verification_pending'] === true) { ?>
+    var verificationModal = new bootstrap.Modal(document.getElementById("verificationModal"));
+    verificationModal.show();
+    <?php unset($_SESSION['verification_pending']); } ?>
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76A7a9Hr8lFztXXwjbK6g3Kbt1Lz6Y3auD8r5c6EwHgjV4ldtJgROZXB6ZGdvep" crossorigin="anonymous">
-    </script>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 
 </html>

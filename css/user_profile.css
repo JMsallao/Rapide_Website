@@ -395,3 +395,86 @@ body{
 .form-group button:hover {
     background-color: #0056b3;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* Styling for View Details Button */
+    .view-button {
+      display: inline-block;
+      padding: 8px 16px;
+      color: #fff;
+      background: linear-gradient(135deg, #e04a4a, #ff0000);
+      border-radius: 20px;
+      /* Rounded corners */
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Hover Effect */
+  .view-button:hover {
+    background: linear-gradient(135deg, #fffc58, #ffd900);
+      transform: translateY(-2px);
+      /* Slight lift effect */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

@@ -9,7 +9,7 @@
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="shortcut icon" href="../images/R.png" type="image/x-icon">
+    <link rel="shortcut icon" href="images/LogoRapide.png" type="image/x-icon">
     <title>Rapide</title>
     <link rel="stylesheet" href="css\css.css" />
     <link rel="stylesheet" href="css\bootstrap.min.css" />
@@ -19,6 +19,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
+
+
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Raleway:wght@600&display=swap">
+
 </head>
 
 <body>

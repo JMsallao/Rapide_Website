@@ -55,12 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPAuth   = true;
             $mail->Username   = 'jessicaresultan8@gmail.com';   // Full Gmail address
-            $mail->Password   = 'ltnuabgszaygsord';  // App-specific password
+            $mail->Password   = 'rtpndepckbzcqplh';  // App-specific password
             $mail->SMTPSecure = 'ssl';
             $mail->Port       = 465;
 
             // Recipients
-            $mail->setFrom('jessicaresultan8@gmail.com', 'Your App Name');
+            $mail->setFrom('jessicaresultan8@gmail.com', 'Rapide cavite');
             $mail->addAddress($email);  // The user's email address
 
             // Content

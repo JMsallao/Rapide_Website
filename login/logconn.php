@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($password == $stored_password) {
                 $_SESSION["uname"] = $uname;
                 $_SESSION["id"] = $row['id'];
-                header('Location: ../admin/homepage.php');
+                header('Location: ../admin1\dist\Admin-Homepage.php');
                 exit();
             } else {
                 echo '<script type="text/javascript">
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $_SESSION["id"] = $row['id'];
                 echo '<script type="text/javascript">
                 alert("Welcome");
-                window.location = "../user/u-homepage.php";
+                window.location = "../users/Homepage.php";
                 </script>';
                 exit();
             } else {

@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $bday = mysqli_real_escape_string($conn, $_POST['bday']);
 
     // Define a separate upload directory (outside login folder)
-    $upload_dir = '../user/uploads/profile_pics';  // Go up one level and into uploads/profile_pics/
+    $upload_dir = '../users/uploads/profile_pics';  // Go up one level and into uploads/profile_pics/
 
     // Handle profile picture upload if a file is provided
     $profile_pic = '';
@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Execute the query
     if (mysqli_query($conn, $query)) {
-        echo '<script>alert("Profile updated successfully."); window.location.href = "../login/login.php";</script>';
+        echo '<script>alert("Profile updated successfully."); window.location.href = "../users/Homepage.php";</script>';
     } else {
         echo "Error updating profile: " . mysqli_error($conn);
     }
