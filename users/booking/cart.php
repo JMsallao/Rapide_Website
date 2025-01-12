@@ -121,6 +121,15 @@
         font-weight: bold;
     }
 
+
+    body > header > div.header-inner > div > div > div > div.col-lg-7.col-md-9.col-12 > div > nav > ul > li:nth-child(4) > ul{
+        z-index: 10000;
+    }
+
+    body > header > div.header-inner > div > div > div > div.col-lg-7.col-md-9.col-12 > div > nav > ul > li:nth-child(3) > ul{
+        z-index: 10000;
+    }
+
     /* Cart Summary */
     .cart-summary {
         display: flex;
@@ -134,7 +143,7 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         position: sticky;
         top: 0;
-        z-index: 10;
+        z-index: 5000;
         margin-bottom: 20px;
     }
 
@@ -260,7 +269,7 @@
     .custom-navbar {
         position: sticky;
         top: 0;
-        z-index: 1055;
+        z-index: 5;
         /* Ensure navbar is above sticky-header */
         display: flex;
         justify-content: space-between;
@@ -498,6 +507,8 @@
         background-color: #b02a37;
         color: #fff;
     }
+
+    
     </style>
 </head>
 

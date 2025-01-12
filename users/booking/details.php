@@ -1,45 +1,56 @@
 <?php
-    // Include necessary files
-    include('../header.php');
-    include('../connection.php');
-    include('../sessioncheck.php');
+include('../../sessioncheck.php');
+include('../../connection.php');
 
-    // Check if `emergency_id` is set
-    if (!isset($_GET['emergency_id']) || !is_numeric($_GET['emergency_id'])) {
-        die("Invalid Emergency ID.");
-    }
+$user_id = $_SESSION['id'];
+$booking_id = isset($_GET['booking_id']) ? (int)$_GET['booking_id'] : 0;
 
-    $emergency_id = intval($_GET['emergency_id']);
+// Fetch booking details
+$query = "SELECT * FROM bookings WHERE booking_id = ? AND user_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("ii", $booking_id, $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$booking = $result->fetch_assoc();
 
-    // Handle cancellation request
-    if (isset($_POST['cancel_emergency'])) {
-        $update_query = "UPDATE emergencies SET status = 'canceled' WHERE emergency_ID = ? AND status = 'pending'";
+if (!$booking) {
+    echo "Invalid booking ID.";
+    exit();
+}
+
+// Handle cancellation request
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cancel_booking'])) {
+    if ($booking['status'] === 'pending') {
+        $update_query = "UPDATE bookings SET status = 'canceled' WHERE booking_id = ? AND user_id = ?";
         $update_stmt = $conn->prepare($update_query);
-        $update_stmt->bind_param("i", $emergency_id);
-
-        if ($update_stmt->execute() && $update_stmt->affected_rows > 0) {
-            $success_message = "Emergency request has been successfully canceled.";
+        $update_stmt->bind_param("ii", $booking_id, $user_id);
+        if ($update_stmt->execute()) {
+            $success_message = "Booking has been successfully canceled.";
+            // Refresh to update the status
+            header("Location: booking_details.php?booking_id=$booking_id");
+            exit();
         } else {
-            $error_message = "Failed to cancel the emergency request. It might already be processed.";
+            $error_message = "Failed to cancel the booking. Please try again.";
         }
+    } else {
+        $error_message = "Only pending bookings can be canceled.";
     }
+}
 
-    // Fetch emergency details
-    $query = "SELECT e.*, b.branch_name 
-            FROM emergencies e
-            LEFT JOIN branches b ON e.branch_id = b.id
-            WHERE e.emergency_ID = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $emergency_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 0) {
-        die("Emergency not found.");
-    }
-
-    $emergency = $result->fetch_assoc();
+// Fetch items associated with the booking
+$cart_query = "SELECT * FROM cart WHERE booking_id = ? AND user_id = ?";
+$stmt_cart = $conn->prepare($cart_query);
+$stmt_cart->bind_param("ii", $booking_id, $user_id);
+$stmt_cart->execute();
+$cart_result = $stmt_cart->get_result();
 ?>
+
+
+
+
+
+
+
 
 
 <?php
@@ -134,12 +145,19 @@
     <!-- Magnific Popup CSS -->
     <link rel="stylesheet" href="css/magnific-popup.css">
 
+    
     <link rel="stylesheet" href="css/normalizeee.css">
-    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="../../users\style2.css">
     <link rel="stylesheet" href="css/responsive.css">
 
     <style>
-        input,
+
+         body>header>div.header-inner>div>div>div>div.col-lg-3.col-md-3.col-12>div.logo {
+        margin-top: -35px;
+        width: 150px;
+        position: absolute;
+    }
+               input,
     select,
     button {
         width: 100%;
@@ -148,16 +166,23 @@
         box-sizing: border-box;
     }
 
+    /* General Styles for Tabs */
+.nav-tabs {
+    display: flex;
+    justify-content: start;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
+}
 /* Center the container */
-.container1 {
+.container1{
     display: flex;
     justify-content: center; /* Center horizontally */
-    align-items: center;      /* Full viewport height */
+    align-items: center;    /* Center vertically */
     padding: 20px;          /* Add padding for responsiveness */
 }
 
 /* Card styling */
-.emergency-details-card {
+.booking-details-card {
     width: 100%; /* Adjust the width as needed */
     max-width: 600px; /* Limit the maximum width */
     border: 1px solid #ddd;
@@ -169,11 +194,11 @@
 }
 
 /* Individual Detail */
-.emergency-detail {
+.booking-detail {
     margin-bottom: 20px;
 }
 
-.emergency-detail h4 {
+.booking-detail h4 {
     font-size: 18px;
     color: #fcbf17; /* Yellow from the palette */
     margin-bottom: 5px;
@@ -182,48 +207,46 @@
     gap: 10px;
 }
 
-.emergency-detail p {
+.booking-detail p {
     font-size: 16px;
     color: #555;
     margin: 0;
 }
 
 /* Buttons */
-.btn {
+.btn1 {
     font-size: 16px;
-    padding: 10px 20px;
+    padding: 10px;
     border-radius: 5px;
     margin: 10px 5px 0;
+    margin-top: 20px;
 }
 
-.btn-secondary {
+.btn1-secondary {
     background-color: #457b9d; /* Complementary blue */
     border-color: #457b9d;
-    color: #fff;
+    color: white;
 }
 
-.btn-secondary:hover {
+.btn1-secondary:hover {
     background-color: #1d3557;
     border-color: #1d3557;
 }
 
-.btn-danger {
+.btn1-danger {
     background-color: #e63946; /* Deep red */
     border-color: #e63946;
     color: #fff;
 }
 
-.btn-danger:hover {
+.btn1-danger:hover {
     background-color: #d62828;
     border-color: #d62828;
 }
 
-.btn i {
+.btn1 i {
     margin-right: 5px;
 }
-
-
-
 
 
     </style>
@@ -286,14 +309,14 @@
                             <div class="main-menu">
                                 <nav class="navigation">
                                     <ul class="nav menu">
-                                        <li ><a href="Homepage.php">Home</a>
+                                        <li ><a href="../../users\Homepage.php">Home</a>
                                         </li>
                                         <!-- <li><a href="#">Doctos </a></li> -->
-                                        <li><a href="booking/service_list.php">Services </a></li>
+                                        <li><a href="../booking/service_list.php">Services </a></li>
                                         <li><a href="#">Map <i class="icofont-rounded-down"></i></a>
                                             <ul class="dropdown">
-                                                <li><a href="../map/gmap.php">Rapide Cavite Map</a></li>
-                                                <li><a href="../map/emergency_form.php">Emergency Map</a></li>
+                                                <li><a href="../../map/gmap.php">Rapide Cavite Map</a></li>
+                                                <li><a href="../../map/emergency_form.php">Emergency Map</a></li>
                                             </ul>
                                         </li>
                                         <li><a href="#">Chat <i class="icofont-rounded-down"></i></a>
@@ -320,7 +343,7 @@
                                                 <?php endif; ?>
                                             </ul>
                                         </li>
-                                        <li class="active"><a href="Act.php">Activites</a></li>
+                                        <li class="active"><a href="../../users\Act.php">Activites</a></li>
 
                                     </ul>
                                     
@@ -350,8 +373,8 @@
     <!-- Error Page -->
     <section class="error-page section">
     <div class="container1">
-    <div class="emergency-details-card p-4 mb-4">
-        <h2 class="text-center mb-4">Emergency Details</h2>
+    <div class="booking-details-card p-4 mb-4">
+        <h2 class="text-center mb-4">Booking Details</h2>
 
         <?php if (isset($success_message)): ?>
             <div class="alert alert-success">
@@ -365,64 +388,48 @@
             </div>
         <?php endif; ?>
 
-        <div class="emergency-detail">
-            <h4><i class="fa fa-exclamation-triangle"></i> Type</h4>
-            <p><?php echo htmlspecialchars($emergency['emergency_type']); ?></p>
+        <div class="booking-detail">
+            <h4><i class="fa fa-id-badge"></i> Booking ID</h4>
+            <p><?php echo htmlspecialchars($booking['booking_id']); ?></p>
         </div>
 
-        <div class="emergency-detail">
-            <h4><i class="fa fa-car"></i> Car Type</h4>
-            <p><?php echo htmlspecialchars($emergency['car_type']); ?></p>
-        </div>
-
-        <div class="emergency-detail">
-            <h4><i class="fa fa-phone"></i> Contact</h4>
-            <p><?php echo htmlspecialchars($emergency['contact']); ?></p>
-        </div>
-
-        <div class="emergency-detail">
-            <h4><i class="fa fa-map-marker"></i> Location</h4>
-            <p><?php echo htmlspecialchars($emergency['location']); ?></p>
-        </div>
-
-        <div class="emergency-detail">
-            <h4><i class="fa fa-ruler"></i> Within Radius</h4>
-            <p><?php echo htmlspecialchars($emergency['withinRadius']); ?></p>
-        </div>
-
-        <div class="emergency-detail">
+        <div class="booking-detail">
             <h4><i class="fa fa-calendar-alt"></i> Date</h4>
-            <p><?php echo htmlspecialchars(date('F j, Y, h:i A', strtotime($emergency['created_at']))); ?></p>
+            <p><?php echo htmlspecialchars($booking['booking_date']); ?></p>
         </div>
 
-        <div class="emergency-detail">
-            <h4><i class="fa fa-building"></i> Branch Name</h4>
-            <p><?php echo htmlspecialchars($emergency['branch_name']); ?></p>
-        </div>
-
-        <div class="emergency-detail">
+        <div class="booking-detail">
             <h4><i class="fa fa-info-circle"></i> Status</h4>
-            <p><?php echo htmlspecialchars(ucfirst($emergency['status'])); ?></p>
+            <p><?php echo htmlspecialchars(ucfirst($booking['status'])); ?></p>
         </div>
 
-        <div class="text-center">
-            <a href="Act.php" class="btn btn-secondary">
-                <i class="fa fa-arrow-left"></i> Back to Activities
+        <div class="booking-detail">
+            <h4><i class="fa fa-dollar-sign"></i> Total Price</h4>
+            <p>₱<?php echo number_format($booking['total_price'], 2); ?></p>
+        </div>
+
+        <h4><i class="fa fa-list"></i> Items in this Booking</h4>
+        <ul>
+            <?php while ($item = $cart_result->fetch_assoc()): ?>
+                <li><?php echo htmlspecialchars($item['service_name']) . " - Quantity: " . htmlspecialchars($item['quantity']) . " - ₱" . number_format($item['price'], 2); ?></li>
+            <?php endwhile; ?>
+        </ul>
+
+        <div class="text-center mt-5">
+            <a href="booking_history.php" class="btn1 btn-secondary">
+                <i class="fa fa-arrow-left"></i> Back to Booking History
             </a>
 
-            <?php if ($emergency['status'] === 'pending'): ?>
+            <?php if ($booking['status'] === 'pending'): ?>
                 <form method="post" class="d-inline">
-                    <button type="submit" name="cancel_emergency" class="btn btn-danger">
-                        <i class="fa fa-times-circle"></i> Cancel Emergency
+                    <button type="submit" name="cancel_booking" class="btn1 btn-danger">
+                        <i class="fa fa-times-circle"></i> Cancel Booking
                     </button>
                 </form>
             <?php endif; ?>
         </div>
     </div>
 </div>
-
-
-
 
     </section>
     <!--/ End Error Page -->

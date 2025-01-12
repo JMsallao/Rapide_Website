@@ -124,27 +124,32 @@
 
         
         // Handle selection of existing images
-    if (isset($_POST['existing_images']) && is_array($_POST['existing_images'])) {
-        foreach ($_POST['existing_images'] as $selected_image) {
-            // Ensure the relative path is correct
-            $selected_image_path = str_replace(['../../', '\\'], ['../', '/'], $selected_image);
+        if (isset($_POST['existing_images']) && is_array($_POST['existing_images'])) {
+            foreach ($_POST['existing_images'] as $selected_image) {
+                // Ensure the relative path is correct
+                $selected_image_path = str_replace(['../../', '\\'], ['../', '/'], $selected_image);
 
             // Check if the image is already in the database for this content
             $query = "SELECT COUNT(*) AS count FROM bg_img WHERE content_id = ? AND image_url = ?";
             $stmt = $conn->prepare($query);
-            $stmt->bind_param("is", $id, $selected_image_path);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            $row = $result->fetch_assoc();
-
-            // Only insert if not already present
-            if ($row['count'] == 0) {
-                $query = "INSERT INTO bg_img (content_id, image_url) VALUES (?, ?)";
-                $stmt = $conn->prepare($query);
+            if ($stmt) {
                 $stmt->bind_param("is", $id, $selected_image_path);
                 $stmt->execute();
+                $result = $stmt->get_result();
+                $row = $result->fetch_assoc();
+    
+                // Only insert if not already present
+                if ($row['count'] == 0) {
+                    $insert_query = "INSERT INTO bg_img (content_id, image_url) VALUES (?, ?)";
+                    $insert_stmt = $conn->prepare($insert_query);
+                    if ($insert_stmt) {
+                        $insert_stmt->bind_param("is", $id, $selected_image_path);
+                        $insert_stmt->execute();
+                        $insert_stmt->close();
+                    }
+                }
+                $stmt->close();
             }
-            $stmt->close();
         }
     }
         // Redirect to avoid form resubmission
@@ -211,64 +216,68 @@
     <link rel="shortcut icon" href="../../images\rapide_logo.png" type="image/x-icon">
 
     <style>
+    .image-container {
+        position: relative;
+        border: 1px solid #ddd;
+        padding: 10px;
+        width: 120px;
+        height: 120px;
+    }
 
-        .image-container {
-            position: relative;
-            border: 1px solid #ddd;
-            padding: 10px;
-            width: 120px;
-            height: 120px;
-        }
+    .image-container img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+        margin: 0 auto;
+    }
 
-        .image-container img {
-            max-width: 100%;
-            max-height: 100%;
-            display: block;
-            margin: 0 auto;
-        }
+    .delete-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        padding: 5px 10px;
+        cursor: pointer;
+        font-size: 12px;
+    }
 
-        .delete-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            padding: 5px 10px;
-            cursor: pointer;
-            font-size: 12px;
-        }
+    .delete-btn:hover {
+        background-color: #e60000;
+    }
 
-        .delete-btn:hover {
-            background-color: #e60000;
-        }
+    .badge-counter {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        transform: translate(50%, -50%);
+        font-size: 12px;
+        background-color: #ff3d3d;
+        /* Vibrant red */
+        color: white;
+        padding: 4px 8px;
+        border-radius: 50%;
+        /* Perfect circle */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        font-weight: bold;
+    }
 
-        .badge-counter {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            transform: translate(50%, -50%);
-            font-size: 12px;
-            background-color: #ff3d3d;
-            /* Vibrant red */
-            color: white;
-            padding: 4px 8px;
-            border-radius: 50%;
-            /* Perfect circle */
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-            font-weight: bold;
-        }
+    /* Adjust bell icon positioning */
+    .fa-bell {
+        position: relative;
+    }
 
-        /* Adjust bell icon positioning */
-        .fa-bell {
-            position: relative;
-        }
+    /* Adjust dropdown spacing */
+    .dropdown-menu {
+        margin-top: 10px;
+    }
 
-        /* Adjust dropdown spacing */
-        .dropdown-menu {
-            margin-top: 10px;
-        }
+    #editModal1>div>div>form>div.modal-body>div>div {
+        overflow-y: scroll;
+        height: 150px;
+    }
     </style>
 </head>
 
@@ -319,6 +328,12 @@
                     </li>
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
+                        <a class="nav-link" href="Calendar.php">
+                            <i class="mdi mdi-calendar-check menu-icon"></i>
+                            <span class="menu-title">Calendar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../booking/history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
@@ -331,25 +346,25 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/service.php">
+                        <a class="nav-link" href="service.php">
                             <i class="mdi mdi-tools menu-icon"></i>
                             <span class="menu-title">Services</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="../../admin1/dist/Users.php">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Users</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/message_inbox.php">
+                        <a class="nav-link" href="message_inbox.php">
                             <i class="mdi mdi-message-text-outline menu-icon"></i>
                             <span class="menu-title">Messages</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../booking/adminMoMamaMo/bukingdets.php">
+                        <a class="nav-link" href="Reports.php">
                             <i class="mdi mdi-file-chart menu-icon"></i>
                             <span class="menu-title">Reports</span>
                         </a>
@@ -368,142 +383,170 @@
             <!-- partial -->
 
             <div class="container mt-5">
-            <h1>Homepage Content Management</h1>
+                <h1>Homepage Content Management</h1>
 
-            <!-- Display Homepage Content -->
-            <div class="row">
-            <?php foreach ($contents as $content): ?>
-            <div class="col-md-12">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <!-- Display Content Details Once -->
-                        <h5 class="card-title"><?= htmlspecialchars($content['subhead']); ?></h5>
-                        <h6 class="card-subtitle mb-2 text-muted"><?= htmlspecialchars($content['heading']); ?></h6>
-                        <p class="card-text"><?= htmlspecialchars($content['description']); ?></p>
-                        <a href="<?= htmlspecialchars($content['button_link']); ?>" class="btn btn-primary"><?= htmlspecialchars($content['button_text']); ?></a>
+                <!-- Display Homepage Content -->
+                <div class="row">
+                    <?php foreach ($contents as $content): ?>
+                    <div class="col-md-12">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <!-- Display Content Details Once -->
+                                <h5 class="card-title"><?= htmlspecialchars($content['subhead']); ?></h5>
+                                <h6 class="card-subtitle mb-2 text-muted"><?= htmlspecialchars($content['heading']); ?>
+                                </h6>
+                                <p class="card-text"><?= htmlspecialchars($content['description']); ?></p>
+                                <a href="<?= htmlspecialchars($content['button_link']); ?>"
+                                    class="btn btn-primary"><?= htmlspecialchars($content['button_text']); ?></a>
 
-                        <!-- Display Images for this Content -->
-                        <div class="mt-3">
-                            <h6>Images:</h6>
-                            <div class="d-flex flex-wrap">
-                                <?php if (!empty($content['images'])): ?>
-                                    <?php foreach ($content['images'] as $image_url): ?>
-                                        <div class="me-2 mb-2">
-                                        <img src="<?= htmlspecialchars('../../' . ltrim($image_url, './')); ?>" alt="Content Image" class="img-fluid" style="max-width: 150px;">
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php else: ?>
-                                    <p class="text-muted">No images available.</p>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-
-                        <!-- Edit Button -->
-                        <button class="btn btn-warning mt-2" data-bs-toggle="modal" data-bs-target="#editModal<?= $content['id']; ?>">Edit</button>
-                    </div>
-                </div>
-            </div>
-
-        <!-- Edit Modal -->
-        <div class="modal fade" id="editModal<?= $content['id']; ?>" tabindex="-1" aria-labelledby="editModalLabel<?= $content['id']; ?>" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form method="POST" enctype="multipart/form-data">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel<?= $content['id']; ?>">Edit Content</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <input type="hidden" name="id" value="<?= $content['id']; ?>">
-                            <div class="mb-3">
-                                <label for="subhead<?= $content['id']; ?>" class="form-label">Subhead</label>
-                                <input type="text" class="form-control" id="subhead<?= $content['id']; ?>" name="subhead" value="<?= htmlspecialchars($content['subhead']); ?>">
-                            </div>
-                            <div class="mb-3">
-                                <label for="heading<?= $content['id']; ?>" class="form-label">Heading</label>
-                                <input type="text" class="form-control" id="heading<?= $content['id']; ?>" name="heading" value="<?= htmlspecialchars($content['heading']); ?>">
-                            </div>
-                            <div class="mb-3">
-                                <label for="description<?= $content['id']; ?>" class="form-label">Description</label>
-                                <textarea class="form-control" id="description<?= $content['id']; ?>" name="description"><?= htmlspecialchars($content['description']); ?></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="button_text<?= $content['id']; ?>" class="form-label">Button Text</label>
-                                <input type="text" class="form-control" id="button_text<?= $content['id']; ?>" name="button_text" value="<?= htmlspecialchars($content['button_text']); ?>">
-                            </div>
-                            <div class="mb-3">
-                                <label for="button_link<?= $content['id']; ?>" class="form-label">Button Link</label>
-                                <input type="text" class="form-control" id="button_link<?= $content['id']; ?>" name="button_link" value="<?= htmlspecialchars($content['button_link']); ?>">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Current Images</label>
-                                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                                    <?php if (!empty($content['images'])): ?>
+                                <!-- Display Images for this Content -->
+                                <div class="mt-3">
+                                    <h6>Images:</h6>
+                                    <div class="d-flex flex-wrap">
+                                        <?php if (!empty($content['images'])): ?>
                                         <?php foreach ($content['images'] as $image_url): ?>
-                                            <div class="image-container">
-                                                <!-- Display each image -->
-                                                <img src="<?= htmlspecialchars('../../' . ltrim($image_url, './')); ?>" alt="Content Image">
-
-                                                <!-- Delete Button (X) -->
-                                                <form method="POST" style="display: inline;">
-                                                    <input type="hidden" name="delete_image_url" value="<?= htmlspecialchars($image_url); ?>">
-                                                    <input type="hidden" name="content_id" value="<?= $content['id']; ?>">
-                                                    <button type="submit" name="delete_image" class="delete-btn">&times;</button>
-                                                </form>
-                                            </div>
+                                        <div class="me-2 mb-2">
+                                            <img src="<?= htmlspecialchars('../../' . ltrim($image_url, './')); ?>"
+                                                alt="Content Image" class="img-fluid" style="max-width: 150px;">
+                                        </div>
                                         <?php endforeach; ?>
-                                    <?php else: ?>
+                                        <?php else: ?>
                                         <p class="text-muted">No images available.</p>
-                                    <?php endif; ?>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Select from Existing Images</label>
-                                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                                    <?php if (!empty($available_images)): ?>
-                                        <?php foreach ($available_images as $image): ?>
-                                            <div class="image-container">
-                                                <label style="cursor: pointer;">
-                                                    <!-- Hidden checkbox -->
-                                                    <input type="checkbox" name="existing_images[]" value="<?= htmlspecialchars($image); ?>" style="display: none;">
-                                                    <!-- Clickable image -->
-                                                    <img src="<?= htmlspecialchars($upload_dir . $image); ?>" alt="<?= htmlspecialchars($image); ?>">
-                                                </label>
+                                <!-- Edit Button -->
+                                <button class="btn btn-warning mt-2" data-bs-toggle="modal"
+                                    data-bs-target="#editModal<?= $content['id']; ?>">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editModal<?= $content['id']; ?>" tabindex="-1"
+                        aria-labelledby="editModalLabel<?= $content['id']; ?>" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="POST" enctype="multipart/form-data">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editModalLabel<?= $content['id']; ?>">Edit Content
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="id" value="<?= $content['id']; ?>">
+                                        <div class="mb-3">
+                                            <label for="subhead<?= $content['id']; ?>"
+                                                class="form-label">Subhead</label>
+                                            <input type="text" class="form-control" id="subhead<?= $content['id']; ?>"
+                                                name="subhead" value="<?= htmlspecialchars($content['subhead']); ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="heading<?= $content['id']; ?>"
+                                                class="form-label">Heading</label>
+                                            <input type="text" class="form-control" id="heading<?= $content['id']; ?>"
+                                                name="heading" value="<?= htmlspecialchars($content['heading']); ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="description<?= $content['id']; ?>"
+                                                class="form-label">Description</label>
+                                            <textarea class="form-control" id="description<?= $content['id']; ?>"
+                                                name="description"><?= htmlspecialchars($content['description']); ?></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="button_text<?= $content['id']; ?>" class="form-label">Button
+                                                Text</label>
+                                            <input type="text" class="form-control"
+                                                id="button_text<?= $content['id']; ?>" name="button_text"
+                                                value="<?= htmlspecialchars($content['button_text']); ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="button_link<?= $content['id']; ?>" class="form-label">Button
+                                                Link</label>
+                                            <input type="text" class="form-control"
+                                                id="button_link<?= $content['id']; ?>" name="button_link"
+                                                value="<?= htmlspecialchars($content['button_link']); ?>">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Current Images</label>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                <?php if (!empty($content['images'])): ?>
+                                                <?php foreach ($content['images'] as $image_url): ?>
+                                                <div class="image-container">
+                                                    <!-- Display each image -->
+                                                    <img src="<?= htmlspecialchars('../../' . ltrim($image_url, './')); ?>"
+                                                        alt="Content Image">
+
+                                                    <!-- Delete Button (X) -->
+                                                    <form method="POST" style="display: inline;">
+                                                        <input type="hidden" name="delete_image_url"
+                                                            value="<?= htmlspecialchars($image_url); ?>">
+                                                        <input type="hidden" name="content_id"
+                                                            value="<?= $content['id']; ?>">
+                                                        <button type="submit" name="delete_image"
+                                                            class="delete-btn">&times;</button>
+                                                    </form>
+                                                </div>
+                                                <?php endforeach; ?>
+                                                <?php else: ?>
+                                                <p class="text-muted">No images available.</p>
+                                                <?php endif; ?>
                                             </div>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <p>No images available in the uploads directory.</p>
-                                    <?php endif; ?>
-                                </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Select from Existing Images</label>
+                                            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                                                <?php if (!empty($available_images)): ?>
+                                                <?php foreach ($available_images as $image): ?>
+                                                <div class="image-container">
+                                                    <label style="cursor: pointer;">
+                                                        <!-- Hidden checkbox -->
+                                                        <input type="checkbox" name="existing_images[]"
+                                                            value="<?= htmlspecialchars($image); ?>"
+                                                            style="display: none;">
+                                                        <!-- Clickable image -->
+                                                        <img src="<?= htmlspecialchars($upload_dir . $image); ?>"
+                                                            alt="<?= htmlspecialchars($image); ?>">
+                                                    </label>
+                                                </div>
+                                                <?php endforeach; ?>
+                                                <?php else: ?>
+                                                <p>No images available in the uploads directory.</p>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success" name="update_content">Save
+                                            Changes</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </form>
                             </div>
-
-
-
-
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" name="update_content">Save Changes</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </form>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
-            </div>
-        </div>
-    <?php endforeach; ?>
-</div>
 
-    </div>
+            </div>
             <!-- main-panel ends -->
         </div>
         <!-- page-body-wrapper ends -->
     </div>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
         const imageContainers = document.querySelectorAll(".image-container label");
 
         imageContainers.forEach(label => {
-            label.addEventListener("click", function (e) {
+            label.addEventListener("click", function(e) {
                 e.preventDefault();
 
                 const checkbox = label.querySelector("input[type='checkbox']");
@@ -525,20 +568,21 @@
         // Ensure form submission works
         document.querySelectorAll("form").forEach(form => {
             form.addEventListener("submit", (e) => {
-                const uncheckedCheckboxes = form.querySelectorAll("input[type='checkbox']:not(:checked)");
+                const uncheckedCheckboxes = form.querySelectorAll(
+                    "input[type='checkbox']:not(:checked)");
                 uncheckedCheckboxes.forEach(checkbox => {
-                    checkbox.disabled = true; // Prevent unselected checkboxes from blocking submission
+                    checkbox.disabled =
+                        true; // Prevent unselected checkboxes from blocking submission
                 });
             });
         });
     });
 
     document.querySelectorAll("button[name='update_content']").forEach(button => {
-    button.addEventListener("click", () => {
-        console.log("Save Changes button clicked!");
+        button.addEventListener("click", () => {
+            console.log("Save Changes button clicked!");
+        });
     });
-});
-
     </script>
 
     <!-- container-scroller -->

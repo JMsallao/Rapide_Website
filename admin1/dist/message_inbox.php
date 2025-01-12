@@ -197,10 +197,10 @@ $result = $stmt->get_result();
                     </button>
                 </div>
                 <div>
-                    <a class="navbar-brand brand-logo" href="../../admin1\dist\Admin-Homepage.php">
+                    <a class="navbar-brand brand-logo" href="Admin-Homepage.php">
                         <h2>Rapide</h2>
                     </a>
-                    <a class="navbar-brand brand-logo-mini" href="../../admin1\dist\Admin-Homepage.php">
+                    <a class="navbar-brand brand-logo-mini" href="Admin-Homepage.php">
                         <h3>R</h3>
                     </a>
                 </div>
@@ -234,6 +234,12 @@ $result = $stmt->get_result();
                     </li>
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
+                        <a class="nav-link" href="Calendar.php">
+                            <i class="mdi mdi-calendar-check menu-icon"></i>
+                            <span class="menu-title">Calendar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../booking/history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
@@ -251,12 +257,12 @@ $result = $stmt->get_result();
                             <span class="menu-title">Services</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="Users.php">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Users</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="message_inbox.php">
                             <i class="mdi mdi-message-text-outline menu-icon"></i>
@@ -264,13 +270,13 @@ $result = $stmt->get_result();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../booking/adminMoMamaMo/bukingdets.php">
+                        <a class="nav-link" href="Reports.php">
                             <i class="mdi mdi-file-chart menu-icon"></i>
                             <span class="menu-title">Reports</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../login/logout.php">
+                        <a class="nav-link" href="../login/login.php">
                             <i class="mdi mdi-logout user"></i> <!-- Changed the icon to mdi-logout -->
                             <span class="menu-title">Sign Out</span>
                         </a>

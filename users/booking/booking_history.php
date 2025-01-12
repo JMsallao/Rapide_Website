@@ -429,11 +429,11 @@
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <?php echo htmlspecialchars($username); ?>
                                     <!-- Display the username -->
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="../../login/profile_setup.php">Profile</a></li>
+                                        <li><a class="dropdown-item" href="../../login/logout.php">Logout</a></li>
+                                    </ul>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="../../login/profile_setup.php">Profile</a></li>
-                                    <li><a class="dropdown-item" href="../../login/logout.php">Logout</a></li>
-                                </ul>
                             </div>
                         </div>
                     </div>

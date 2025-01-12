@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (mysqli_num_rows($result) > 0) {
         // Verification successful - Move user to main table
+        
         $user = mysqli_fetch_assoc($result);
         $first_name = $user['fname'];
         $last_name = $user['lname'];
@@ -31,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $deleteQuery = "DELETE FROM temp_users WHERE email = '$email'";
             mysqli_query($conn, $deleteQuery);
 
-            echo '<script>alert("Verification successful! You can now log in."); window.location = "login.php";</script>';
+            echo '<script>alert("Verification successful! You can now log in."); window.location = "../login/login.php";</script>';
         } else {
             echo "Error: " . mysqli_error($conn);
         }

@@ -1,34 +1,33 @@
 <?php
-session_start();
-include('../connection.php');
+    session_start();
+    include('../connection.php');
 
-// Ensure the user is logged in
-if (!isset($_SESSION['id'])) {
-    die("User not logged in.");
-}
-
-$user_id = $_SESSION['id'];
-
-// Fetch marker locations from the map database
-$sql = "SELECT location_id, location, lat, lng FROM map"; 
-$result = $conn->query($sql);
-
-$locations = [];
-
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $locations[] = [
-            'location_id' => $row['location_id'],
-            'location' => $row['location'],
-            'lat' => $row['lat'],
-            'lng' => $row['lng']
-        ];
+    // Ensure the user is logged in
+    if (!isset($_SESSION['id'])) {
+        die("User not logged in.");
     }
-} else {
-    echo "0 results";
-}
 
-$conn->close();
+    $user_id = $_SESSION['id'];
+
+    // Fetch branch data from the branches table
+    $sql = "SELECT id, branch_name, lat, lng FROM branches";
+    $result = $conn->query($sql);
+
+    $branches = [];
+
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $branches[] = [
+                'id' => $row['id'],
+                'branch_name' => $row['branch_name'],
+                'lat' => $row['lat'],
+                'lng' => $row['lng']
+            ];
+        }
+    } else {
+        echo "0 results";
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -147,7 +146,6 @@ $conn->close();
             width: 100%;
             margin-top: 20px;
             border-radius: 10px;
-            display: none;
         }
 
         #otherEmergencyType {
@@ -184,253 +182,180 @@ $conn->close();
 </head>
 <body>
 
+    <div class="container">
+        <a href="javascript:history.back()" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
+        <h1>Emergency Request Form</h1>
+        <form id="emergencyForm" method="POST" action="emergency_submit.php">
+            <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
 
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <i class="fas fa-user"></i>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            </div>
 
-<div class="container">
-<a href="javascript:history.back()" class="back-button">
-    <i class="fas fa-arrow-left"></i> Back
-</a>
-<h1>Emergency Request Form</h1>
-    <form id="emergencyForm" method="POST" action="emergency_submit.php">
-        <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+            <div class="form-group">
+                <label for="emergencyType">Type of Emergency:</label>
+                <i class="fas fa-exclamation-circle"></i>
+                <select id="emergencyType" name="emergencyType" required>
+                    <option value="">Select an emergency type</option>
+                    <option value="Dead Battery">Dead Battery</option>
+                    <option value="Engine Failure">Engine Failure</option>
+                    <option value="Flat Tire">Flat Tire</option>
+                    <option value="Leakage">Leakage</option>
+                    <option value="other">Other (Please specify)</option>
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label for="name">Your Name:</label>
-            <i class="fas fa-user"></i>
-            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-        </div>
+            <div id="otherEmergencyType" class="form-group">
+                <label for="otherEmergencyDetail">Please specify:</label>
+                <i class="fas fa-pencil-alt"></i>
+                <input type="text" id="otherEmergencyDetail" name="otherEmergencyDetail" placeholder="Specify your emergency">
+            </div>
 
-        <div class="form-group">
-            <label for="emergencyType">Type of Emergency:</label>
-            <i class="fas fa-exclamation-circle"></i>
-            <select id="emergencyType" name="emergencyType" required>
-                <option value="">Select an emergency type</option>
-                <option value="Dead Battery">Dead Battery</option>
-                <option value="Engine Failure">Engine Failure</option>
-                <option value="Flat Tire">Flat Tire</option>
-                <option value="Leakage">Leakage</option>
-                <option value="other">Other (Please specify)</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label for="carType">Type of Car:</label>
+                <i class="fas fa-car"></i>
+                <input type="text" id="carType" name="carType" placeholder="e.g., Sedan, SUV, Truck" required>
+            </div>
 
-        <div id="otherEmergencyType" class="form-group">
-            <label for="otherEmergencyDetail">Please specify:</label>
-            <i class="fas fa-pencil-alt"></i>
-            <input type="text" id="otherEmergencyDetail" name="otherEmergencyDetail" placeholder="Specify your emergency">
-        </div>
+            <div class="form-group">
+                <label for="contact">Contact Number:</label>
+                <i class="fas fa-phone-alt"></i>
+                <input type="text" id="contact" name="contact" placeholder="Enter your contact number" required>
+            </div>
 
-        <div class="form-group">
-            <label for="carType">Type of Car:</label>
-            <i class="fas fa-car"></i>
-            <input type="text" id="carType" name="carType" placeholder="e.g., Sedan, SUV, Truck" required>
-        </div>
+            <div class="form-group">
+                <label for="location">Selected Location:</label>
+                <i class="fas fa-map-marker-alt"></i>
+                <input type="text" id="location" name="location" placeholder="Auto-detected location" required readonly>
+            </div>
 
-        <div class="form-group">
-            <label for="contact">Contact Number:</label>
-            <i class="fas fa-phone-alt"></i>
-            <input type="text" id="contact" name="contact" placeholder="Enter your contact number" required>
-        </div>
+            <!-- Hidden fields -->
+            <input type="hidden" id="userLat" name="userLat">
+            <input type="hidden" id="userLng" name="userLng">
+            <input type="hidden" id="branch_id" name="branch_id">
 
-        <div class="form-group">
-            <label for="location">Selected Location:</label>
-            <i class="fas fa-map-marker-alt"></i>
-            <input type="text" id="location" name="location" placeholder="Auto-detected location" required readonly>
-        </div>
-
-        <!-- Hidden fields -->
-        <input type="hidden" id="userLat" name="userLat">
-        <input type="hidden" id="userLng" name="userLng">
-        <input type="hidden" id="withinRadius" name="withinRadius" value="No">
-
-        <div id="map"></div>
-        
-        <button type="button" id="findNearestLocationBtn"><i class="fas fa-map"></i> Find Nearest Location</button>
-        <button type="submit"><i class="fas fa-paper-plane"></i> Submit Request</button>
-    </form>
-</div>
-
-
-
-<script>
-
-    // Checks if Emergency Type is set to Other.
-    document.getElementById('emergencyType').addEventListener('change', function () {
-        const emergencyType = document.getElementById('emergencyType').value;
-        const otherField = document.getElementById('otherEmergencyType');
-        otherField.style.display = emergencyType === 'other' ? 'block' : 'none';
-    });
-
-
-    var map;
-    var directionsService;
-    var directionsRenderer;
-    var userMarker;
-    var nearestMarker;
-    var nearestCircle;  // To store the circle around the nearest marker
-    var locationMarkers = [];  // Array to hold the location markers
-    var locations = <?php echo json_encode($locations); ?>;  // Converts Marker locations from PHP to JavaScript
-
-    // Haversine formula to calculate distance in kilometers
-    function calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371
-        const dLat = (lat2 - lat1) * (Math.PI / 180);
-        const dLon = (lon2 - lon1) * (Math.PI / 180);
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const distance = R * c; 
-        return distance;
-    }
-
-    // Initialize the map and the Directions services
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 14.403428905167619, lng: 120.86599597337366 },  // Default coordinates
-            zoom: 14.5
-        });
-
-        directionsService = new google.maps.DirectionsService();
-        directionsRenderer = new google.maps.DirectionsRenderer();
-        directionsRenderer.setMap(map);
-
-        userMarker = new google.maps.Marker({
-            map: map,
-            title: "User Location",
-            icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'  // Blue marker for user
-        });
-
-        nearestMarker = new google.maps.Marker({
-            map: map,
-            title: "Nearest Location",
-            icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'  // Red marker for nearest location
-        });
-
-        // Place markers for all locations from the database
-        locations.forEach(function(location) {
-            var locationLatLng = new google.maps.LatLng(location.lat, location.lng);
-            var marker = new google.maps.Marker({
-                position: locationLatLng,
-                map: map,
-                title: location.location,
-                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'  // Green marker for locations
-            });
+            <div id="map"></div>
             
-            // Add marker to the locationMarkers array
-            locationMarkers.push(marker);
-        });
-    }
+            <button type="button" id="findNearestLocationBtn"><i class="fas fa-map"></i> Find Nearest Location</button>
+            <button type="submit"><i class="fas fa-paper-plane"></i> Submit Request</button>
+        </form>
+    </div>
 
-    // Event listener to find the nearest location based on user's geolocation
-    document.getElementById('findNearestLocationBtn').addEventListener('click', function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const userLat = position.coords.latitude;
-                const userLng = position.coords.longitude;
+    <script>
+        var map;
+        var directionsService;
+        var directionsRenderer;
+        var userMarker;
+        var nearestMarker;
+        var nearestCircle; // For radius display
+        var locations = <?php echo json_encode($branches); ?>;
 
-                // Set the origin to the user's location
-                const userLocation = new google.maps.LatLng(userLat, userLng);
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 14.403428905167619, lng: 120.86599597337366 },
+                zoom: 14.5
+            });
 
-                // Show the map and center it on the user's location
-                document.getElementById('map').style.display = 'block'; // Show the map container
-                map.setCenter(userLocation);
-                map.setZoom(14);
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
 
-                // Place a marker at the user's location
-                userMarker.setPosition(userLocation);
+            userMarker = new google.maps.Marker({
+                map: map,
+                title: "Your Location",
+                icon: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+            });
 
-                // Update the hidden input fields with the user's latitude and longitude
-                document.getElementById('userLat').value = userLat;
-                document.getElementById('userLng').value = userLng;
+            nearestMarker = new google.maps.Marker({
+                map: map,
+                title: "Nearest Branch",
+                icon: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+            });
+        }
 
-                // Initialize variables to track the nearest location
-                let nearestLocation = null;
-                let shortestDistance = Infinity;
+        document.getElementById('findNearestLocationBtn').addEventListener('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const userLat = position.coords.latitude;
+                    const userLng = position.coords.longitude;
+                    const userLocation = new google.maps.LatLng(userLat, userLng);
 
-                // Track if all directions have been processed
-                let directionsProcessed = 0;
+                    document.getElementById('userLat').value = userLat;
+                    document.getElementById('userLng').value = userLng;
 
-                // Loop through all the locations to find the nearest one based on driving distance
-                locations.forEach(function(location) {
-                    const destination = new google.maps.LatLng(location.lat, location.lng);
+                    userMarker.setPosition(userLocation);
+                    map.setCenter(userLocation);
+                    map.setZoom(14);
 
-                    // Request directions to each location
-                    const request = {
-                        origin: userLocation,
-                        destination: destination,
-                        travelMode: google.maps.TravelMode.DRIVING
-                    };
+                    let nearestBranch = null;
+                    let shortestDistance = Infinity;
 
-                    // Calculate the driving distance between the user and each location
-                    directionsService.route(request, function(result, status) {
-                        directionsProcessed++;
+                    locations.forEach(branch => {
+                        const branchLocation = new google.maps.LatLng(branch.lat, branch.lng);
+                        const distance = google.maps.geometry.spherical.computeDistanceBetween(userLocation, branchLocation);
 
-                        if (status === google.maps.DirectionsStatus.OK)
-                        {
-                            // Get the travel distance from the response
-                            const routeDistance = result.routes[0].legs[0].distance.value; // in meters
-                            const routeDistanceInKm = routeDistance / 1000; // Convert to kilometers
-
-                            // Compare the distance to find the nearest location
-                            if (routeDistanceInKm < shortestDistance) 
-                            {
-                                shortestDistance = routeDistanceInKm;
-                                nearestLocation = location;
-
-                                // Update the 'location' field with the nearest location name
-                                document.getElementById('location').value = nearestLocation.location; // Set the name of the nearest location
-
-                                // Show directions to the nearest location
-                                directionsRenderer.setDirections(result);
-
-                                // Place a marker at the nearest location
-                                nearestMarker.setPosition(new google.maps.LatLng(nearestLocation.lat, nearestLocation.lng));
-                                map.setCenter(nearestMarker.getPosition());
-                                map.setZoom(14);
-
-                                // Remove the previous circle if it exists.
-                                if (nearestCircle)
-                                {
-                                    nearestCircle.setMap(null);
-                                }
-
-                                // Draw a circle with a 5km radius around the nearest location
-                                nearestCircle = new google.maps.Circle({
-                                    map: map,
-                                    center: nearestMarker.getPosition(),
-                                    radius: 8000, // 8 kilometers
-                                    fillColor: '#0000FF',  // Blue color
-                                    fillOpacity: 0.2,      // Light opacity for the fill
-                                    strokeColor: '#0000FF', // Blue border color
-                                    strokeOpacity: 0.6,    // Border opacity
-                                    strokeWeight: 2        // Border thickness
-                                });
-
-                                // Check if the user is within 5 kilometers. Yes if within, No if not.
-                                if (routeDistanceInKm <= 8) 
-                                {
-                                    document.getElementById('withinRadius').value = "Yes";
-                                }
-                                else 
-                                {
-                                    document.getElementById('withinRadius').value = "No";
-                                }
-                            }
-                        }
-                        if (directionsProcessed === locations.length) 
-                        {
+                        if (distance < shortestDistance) {
+                            shortestDistance = distance;
+                            nearestBranch = branch;
                         }
                     });
+
+                    if (nearestBranch) {
+                        const branchLatLng = new google.maps.LatLng(nearestBranch.lat, nearestBranch.lng);
+
+                        // Update form fields
+                        document.getElementById('location').value = nearestBranch.branch_name;
+                        document.getElementById('branch_id').value = nearestBranch.id;
+
+                        // Place nearest branch marker
+                        nearestMarker.setPosition(branchLatLng);
+                        map.setCenter(branchLatLng);
+                        map.setZoom(14);
+
+                        // Add or update radius circle
+                        if (nearestCircle) {
+                            nearestCircle.setMap(null); // Remove the previous circle
+                        }
+
+                        nearestCircle = new google.maps.Circle({
+                            map: map,
+                            center: branchLatLng,
+                            radius: 8000, // 8 kilometers
+                            fillColor: '#0000FF',
+                            fillOpacity: 0.2,
+                            strokeColor: '#0000FF',
+                            strokeOpacity: 0.6,
+                            strokeWeight: 2
+                        });
+
+                        // Render directions
+                        const directionsRequest = {
+                            origin: userLocation,
+                            destination: branchLatLng,
+                            travelMode: google.maps.TravelMode.DRIVING
+                        };
+
+                        directionsService.route(directionsRequest, function (result, status) {
+                            if (status === google.maps.DirectionsStatus.OK) {
+                                directionsRenderer.setDirections(result);
+                            } else {
+                                alert('Could not fetch directions. Please try again.');
+                            }
+                        });
+                    }
+                }, function () {
+                    alert('Geolocation failed or is not supported by your browser.');
                 });
-            }, function() {
-                alert('Geolocation failed or is not supported by this browser.');
-            });
-        } else 
-        {
-            alert('Geolocation is not supported by this browser.');
-        }
-    });
-</script>
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+    </script>
+
 
 </body>
 </html>

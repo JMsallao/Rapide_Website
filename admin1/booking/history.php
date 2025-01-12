@@ -33,7 +33,7 @@
    
     // Fetch all emergency requests (no longer joining with branches table)
     $emergency_query = "
-        SELECT e.emergency_ID, e.emergency_type, e.car_type, e.contact, e.location, e.created_at
+        SELECT e.emergency_ID, e.emergency_type, e.car_type, e.contact, e.location, e.created_at, e.status
         FROM emergencies e
         ORDER BY e.created_at DESC";
     $emergency_result = $conn->query($emergency_query);
@@ -77,7 +77,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>RAPIDE ADMIN </title>
+    <title> RAPIDE ADMIN </title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="../dist/assets/vendors/feather/feather.css">
     <link rel="stylesheet" href="../dist/assets/vendors/mdi/css/materialdesignicons.min.css">
@@ -90,12 +90,12 @@
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <link rel="stylesheet" href="../dist/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
-    <link rel="stylesheet" type="text/css" href="../../admin1/dist/assets/js/select.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="../dist/assets/js/select.dataTables.min.css">
     <!-- End plugin css for this page -->
     <!-- inject:css -->
-    <link rel="stylesheet" href="../../admin1/dist/assets/css/style.css">
+    <link rel="stylesheet" href="../dist/assets/css/style.css">
     <!-- endinject -->
-    <link rel="shortcut icon" href="../images\LogoRapide.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../../images\LogoRapide.png" type="image/x-icon">
 
 
     <style>
@@ -272,6 +272,12 @@
                     </li>
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
+                        <a class="nav-link" href="../dist/Calendar.php">
+                            <i class="mdi mdi-calendar-check menu-icon"></i>
+                            <span class="menu-title">Calendar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
@@ -289,12 +295,12 @@
                             <span class="menu-title">Services</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="..//dist/Users.php">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Users</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="../dist/message_inbox.php">
                             <i class="mdi mdi-message-text-outline menu-icon"></i>
@@ -302,9 +308,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../booking/adminMoMamaMo/bukingdets.php">
+                        <a class="nav-link" href="../dist/Reports.php">
                             <i class="mdi mdi-file-chart menu-icon"></i>
                             <span class="menu-title">Reports</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../login/logout.php">
+                            <i class="mdi mdi-logout user"></i> <!-- Changed the icon to mdi-logout -->
+                            <span class="menu-title">Sign Out</span>
                         </a>
                     </li>
                 </ul>
@@ -345,6 +357,7 @@
                             <th>Contact</th>
                             <th>Location</th>
                             <th>Date</th>
+                            <th>Status</th>
                             <th>Actions</th> <!-- Actions column -->
                         </tr>
                     </thead>
@@ -357,6 +370,7 @@
                             <td><?php echo htmlspecialchars($row['contact']); ?></td>
                             <td><?php echo htmlspecialchars($row['location']); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($row['created_at'])); ?></td>
+                            <td><?php echo htmlspecialchars($row['status']); ?></td>
                             <td>
                                 <a href="emergency_details.php?emergency_ID=<?php echo $row['emergency_ID']; ?>"
                                     class="btn btn-primary btn-sm">View Details</a>
@@ -397,7 +411,7 @@
                             <td><?php echo htmlspecialchars($row['branch_name'] ?: 'N/A'); ?></td>
                             <td><?php echo date('F j, Y, g:i A', strtotime($row['booking_date'])); ?></td>
                             <td>
-                                <a href="bukingdets.php?booking_id=<?php echo $row['booking_id']; ?>"
+                                <a href="booking_details.php?booking_id=<?php echo $row['booking_id']; ?>"
                                     class="btn btn-primary btn-sm">View Details</a>
                             </td>
                         </tr>

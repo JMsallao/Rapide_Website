@@ -7,7 +7,7 @@ if (isset($_SESSION['uname']) && isset($_SESSION['id'])) {
 } else {
     echo '<script>
     alert("You must be logged in to view this page.");
-    window.location = "../login\login.php";
+    window.location = "../index.php";
     </script>';
     exit();
 }

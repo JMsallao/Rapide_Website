@@ -541,16 +541,7 @@
 
     <!-- End Preloader -->
     <!-- Preloader -->
-    <div class="preloader">
-        <div class="loader">
-            <div class="loader-outter"></div>
-            <div class="loader-inner"></div>
-            <div class="indicator">
-                <svg width="16px" height="12px">
-                </svg>
-            </div>
-        </div>
-    </div>
+   
     <!-- Header Area -->
     <header class="header">
         <!-- Topbar -->

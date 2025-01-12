@@ -73,7 +73,8 @@
     <!-- Nice Select CSS -->
     <link rel="stylesheet" href="css/nice-select.css">
     <!-- Font Awesome CSS -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+     <link rel="stylesheet" href="css/font-awesome.min.css">
+
     <!-- icofont CSS -->
     <link rel="stylesheet" href="css/icofont.css">
     <!-- Slicknav -->
@@ -86,6 +87,7 @@
     <link rel="stylesheet" href="css/animate.min.css">
     <!-- Magnific Popup CSS -->
     <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <link rel="stylesheet" href="css/normalizeeee.css">
     <link rel="stylesheet" href="map/style.css">
@@ -97,6 +99,17 @@
 
     <!-- Custom CSS for Better UI -->
     <style>
+         body>header>div.header-inner>div>div>div>div.col-lg-3.col-md-3.col-12>div.logo {
+        margin-top: -35px;
+        width: 150px;
+        position: absolute;
+    }
+    body > header > div.header-inner > div > div > div > div.col-lg-2.col-12.mt-3 > div > button{
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
     /* General Reset */
 
     body {
@@ -174,11 +187,10 @@
                     <div class="col-lg-6 col-md-7 col-12">
                         <!-- Top Contact -->
                         <ul class="top-contact">
-                            <li><i class="fa fa-phone"></i>0966 061 9979 (Globe)
-                            </li>
-                            <li><i class="fa fa-envelope"></i><a href="https://www.facebook.com/RapideAutoServicePH">Fb:
-                                    Rapide</a></li>
-                        </ul>
+                        <li><i class="fa fa-car"></i><a href="https://gulong.ph/?utm_source=rapide.ph"> Buy Tires</a></li>
+                        <li><i class="fa fa-phone"></i>0966 061 9979 (Globe)</li>
+                        <li><i class="fab fa-facebook"></i><a href="https://www.facebook.com/RapideAutoServicePH"> Fb: Rapide</a></li>
+                    </ul>
                         <!-- End Top Contact -->
                     </div>
                 </div>
@@ -193,7 +205,7 @@
                         <div class="col-lg-3 col-md-3 col-12">
                             <!-- Start Logo -->
                             <div class="logo">
-                                <h1>Rapide</h1>
+                                <img src="../images\Rapide.png" alt="">
                                 <!-- <a href="index.html"><img src="" alt="Rapide"></a> -->
                             </div>
                             <!-- End Logo -->
@@ -206,14 +218,14 @@
                             <div class="main-menu">
                                 <nav class="navigation">
                                     <ul class="nav menu">
-                                        <li><a href="../users/Homepage.php">Home</a>
+                                        <li><a href="../users\Homepage.php">Home</a>
                                         </li>
                                         <!-- <li><a href="#">Doctos </a></li> -->
-                                        <li ><a href="../users/booking/service_list.php">Services </a></li>
-                                        <li><a href="#">Map <i class="icofont-rounded-down"></i></a>
+                                        <li><a href="../users\booking\service_list.php">Services </a></li>
+                                        <li  class="active"><a href="../map\gmap.php">Map <i class="icofont-rounded-down"></i></a>
                                             <ul class="dropdown">
-                                                <li class="active"><a href="gmap.php">Rapide Cavite Map</a></li>
-                                                <li><a href="emergency_form.php">Emergency Map</a></li>
+                                                <li><a href="../map/gmap.php">Rapide Cavite Map</a></li>
+                                                <li><a href="../map/emergency_form.php">Emergency Map</a></li>
                                             </ul>
                                         </li>
                                         <li><a href="#">Chat <i class="icofont-rounded-down"></i></a>
@@ -240,10 +252,10 @@
                                                 <?php endif; ?>
                                             </ul>
                                         </li>
-
                                         <li><a href="../users/Act.php">Activites</a></li>
 
                                     </ul>
+                                    
                                 </nav>
                             </div>
                             <!--/ End Main Menu -->
@@ -256,9 +268,8 @@
                                     <!-- Display the username -->
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                                    <li><a class="dropdown-item" href="settings.php">Settings</a></li>
-                                    <li><a class="dropdown-item" href="../../login/login.php">Logout</a></li>
+                                    <li><a class="dropdown-item" href="../login/profile_setup.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="../login\logout.php">Logout</a></li>
                                 </ul>
                             </div>
                         </div>

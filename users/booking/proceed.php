@@ -1,35 +1,55 @@
 <?php
-include('../../sessioncheck.php');
-include('../../connection.php');
+    include('../../sessioncheck.php');
+    include('../../connection.php');
 
-// Check if any items were selected for booking
-if (isset($_POST['cart_ids']) && count($_POST['cart_ids']) > 0) {
-    $selected_cart_ids = $_POST['cart_ids'];
+    // Check if any items were selected for booking
+    if (isset($_POST['cart_ids']) && count($_POST['cart_ids']) > 0) {
+        $selected_cart_ids = $_POST['cart_ids'];
 
-    // Retrieve the selected cart items from the database
-    $cart_ids_imploded = implode(',', array_map('intval', $selected_cart_ids));
-    $query = "SELECT * FROM cart WHERE id IN ($cart_ids_imploded) AND user_id = '{$_SESSION['id']}'";
-    $result = mysqli_query($conn, $query);
-    $selected_items = mysqli_fetch_all($result, MYSQLI_ASSOC);
-} else {
-    // No items selected, redirect back to the cart
-    header('Location: kariton.php');
-    exit();
-}
+        // Retrieve the selected cart items from the database
+        $cart_ids_imploded = implode(',', array_map('intval', $selected_cart_ids));
+        $query = "SELECT * FROM cart WHERE id IN ($cart_ids_imploded) AND user_id = '{$_SESSION['id']}'";
+        $result = mysqli_query($conn, $query);
+        $selected_items = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    } else {
+        // No items selected, redirect back to the cart
+        header('Location: kariton.php');
+        exit();
+    }
 
-// Fetch confirmed bookings to disable on the calendar
-$confirmed_query = "SELECT booking_date FROM bookings WHERE status = 'confirmed'";
-$confirmed_result = mysqli_query($conn, $confirmed_query);
+    // Fetch all bookings for the selected branch
+    $branch_id = isset($_POST['branch_id']) ? $_POST['branch_id'] : null; // Default branch ID, if provided
+    $confirmed_query = "SELECT booking_date, branch_id FROM bookings";
 
-$confirmed_dates = [];
-while ($row = mysqli_fetch_assoc($confirmed_result)) {
-    $confirmed_dates[] = $row['booking_date']; // Collect confirmed booking dates
-}
+    $confirmed_result = mysqli_query($conn, $confirmed_query);
 
-// Fetch branches from the database
-$branch_query = "SELECT id, branch_name FROM branches";
-$branch_result = mysqli_query($conn, $branch_query);
-$branches = mysqli_fetch_all($branch_result, MYSQLI_ASSOC);
+    // Initialize arrays to hold confirmed dates and times by branch
+    $confirmed_dates = [];
+
+    if ($confirmed_result) {
+        while ($row = mysqli_fetch_assoc($confirmed_result)) {
+            if (!$branch_id || $row['branch_id'] == $branch_id) {
+                $booking_date = $row['booking_date'];
+                $date = date('Y-m-d', strtotime($booking_date)); // Extract only the date
+                $time = date('H:i', strtotime($booking_date));  // Extract only the time
+
+                if (!isset($confirmed_dates[$row['branch_id']])) {
+                    $confirmed_dates[$row['branch_id']] = []; // Initialize array for this branch
+                }
+
+                if (!isset($confirmed_dates[$row['branch_id']][$date])) {
+                    $confirmed_dates[$row['branch_id']][$date] = []; // Initialize array for this date
+                }
+
+                $confirmed_dates[$row['branch_id']][$date][] = $time; // Store the time for this branch and date
+            }
+        }
+    }
+
+    // Fetch branches from the database
+    $branch_query = "SELECT id, branch_name FROM branches";
+    $branch_result = mysqli_query($conn, $branch_query);
+    $branches = mysqli_fetch_all($branch_result, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -255,7 +275,7 @@ $branches = mysqli_fetch_all($branch_result, MYSQLI_ASSOC);
         </div>
 
         <!-- Booking Form -->
-        <form id="bookingForm" action="../function/finalDestination.php" method="POST">
+        <form id="bookingForm" action="checkout.php" method="POST">
             <input type="hidden" id="selected_date" name="selected_date" required>
             <input type="hidden" id="selected_time" name="selected_time" required>
             <input type="hidden" id="branch_id" name="branch_id" required>
@@ -275,72 +295,108 @@ $branches = mysqli_fetch_all($branch_result, MYSQLI_ASSOC);
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const calendar = flatpickr("#calendar", {
-                inline: true,
-                minDate: "today",
-                onChange: function (selectedDates, dateStr) {
-                    document.getElementById('selected_date').value = dateStr;
-                    generateTimeSlots(); // Generate time slots when a date is selected
-                },
+            const confirmedDates = <?php echo json_encode($confirmed_dates); ?>;
+
+            // When the branch is selected, update the calendar
+            document.getElementById('branch').addEventListener('change', function () {
+                const branchId = this.value; // Get selected branch ID
+                document.getElementById('branch_id').value = branchId; // Update hidden input for branch ID
+
+                // Generate calendar for the selected branch
+                generateCalendar(branchId);
             });
 
-            const timeSlots = [
-                "8:00 - 9:00",
-                "9:00 - 10:00",
-                "10:00 - 11:00",
-                "11:00 - 12:00",
-                "12:00 - 1:00",
-                "1:00 - 2:00",
-                "2:00 - 3:00",
-                "3:00 - 4:00",
-                "4:00 - 5:00",
-            ];
+            // Initialize Flatpickr
+            function generateCalendar(branchId) {
+                const fullyBookedDates = [];
 
-            function generateTimeSlots() {
+                if (branchId && confirmedDates[branchId]) {
+                    // Check if the branch has fully booked dates
+                    for (const [date, times] of Object.entries(confirmedDates[branchId])) {
+                        if (times.length >= 9) {
+                            fullyBookedDates.push(date);
+                        }
+                    }
+                }
+
+                flatpickr("#calendar", {
+                    inline: true,
+                    minDate: "today",
+                    disable: fullyBookedDates, // Disable fully booked dates
+                    onChange: function (selectedDates, dateStr) {
+                        document.getElementById('selected_date').value = dateStr;
+                        generateTimeSlots(branchId, dateStr); // Generate time slots for the selected date
+                    },
+                });
+            }
+
+            // Generate time slots dynamically for the selected branch and date
+            function generateTimeSlots(branchId, selectedDate) {
                 const container = document.querySelector(".time-slot-container");
-                container.innerHTML = ""; // Clear previous time slots
+                container.innerHTML = ""; // Clear previous slots
                 document.getElementById("time-slots").classList.remove("d-none");
+
+                const timeSlots = [
+                    "08:00",
+                    "09:00",
+                    "10:00",
+                    "11:00",
+                    "12:00",
+                    "13:00",
+                    "14:00",
+                    "15:00",
+                    "16:00",
+                ];
+
+                const bookedTimes =
+                    branchId && confirmedDates[branchId] && confirmedDates[branchId][selectedDate]
+                        ? confirmedDates[branchId][selectedDate]
+                        : [];
 
                 timeSlots.forEach(slot => {
                     const div = document.createElement("div");
                     div.classList.add("time-slot");
-                    div.textContent = slot;
-                    div.onclick = function () {
-                        document.querySelectorAll(".time-slot").forEach(el => el.classList.remove("selected"));
-                        div.classList.add("selected");
-                        document.getElementById("selected_time").value = slot; // Save the selected time
-                        document.getElementById("confirm-button").classList.remove("d-none"); // Show confirm button
-                    };
+                    div.textContent = `${slot} - ${parseInt(slot.split(":")[0]) + 1}:00`; // Format the time slot
+
+                    if (bookedTimes.includes(slot)) {
+                        div.classList.add("disabled");
+                        div.style.pointerEvents = "none";
+                        div.style.opacity = 0.5;
+                    } else {
+                        div.onclick = function () {
+                            document
+                                .querySelectorAll(".time-slot")
+                                .forEach(el => el.classList.remove("selected"));
+                            div.classList.add("selected");
+                            document.getElementById("selected_time").value = slot; // Save selected time
+                            document.getElementById("confirm-button").classList.remove("d-none"); // Show confirm button
+                        };
+                    }
+
                     container.appendChild(div);
                 });
             }
 
-            // Update hidden branch_id input on branch selection
-            document.getElementById('branch').addEventListener('change', function () {
-                document.getElementById('branch_id').value = this.value;
-            });
-
-            // Validate form and dynamically append datetime
+            // Validate form submission
             document.getElementById('bookingForm').addEventListener('submit', function (e) {
-                const branchId = document.getElementById('branch_id').value;
                 const selectedDate = document.getElementById('selected_date').value;
                 const selectedTime = document.getElementById('selected_time').value;
 
-                if (!branchId || !selectedDate || !selectedTime) {
-                    alert('Please complete all fields before submitting.');
+                if (!selectedDate || !selectedTime) {
+                    alert('Please select a date and time before proceeding.');
                     e.preventDefault();
-                } else {
-                    const datetime = `${selectedDate} ${selectedTime}`;
-                    const datetimeInput = document.createElement('input');
-                    datetimeInput.type = 'hidden';
-                    datetimeInput.name = 'datetime';
-                    datetimeInput.value = datetime;
-                    this.appendChild(datetimeInput); // Append datetime to the form
                 }
             });
+
+            // Initialize with the first branch if one exists
+            const initialBranchId = document.getElementById('branch').value;
+            if (initialBranchId) {
+                generateCalendar(initialBranchId);
+            }
         });
 
     </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

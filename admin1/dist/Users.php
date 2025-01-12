@@ -138,6 +138,12 @@
                     </li>
                     <li class="nav-item nav-category">UI Elements</li>
                     <li class="nav-item">
+                        <a class="nav-link" href="Calendar.php">
+                            <i class="mdi mdi-calendar-check menu-icon"></i>
+                            <span class="menu-title">Calendar</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="../booking/history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
@@ -155,12 +161,12 @@
                             <span class="menu-title">Services</span>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="Users.php">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Users</span>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" href="message_inbox.php">
                             <i class="mdi mdi-message-text-outline menu-icon"></i>
@@ -168,7 +174,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1\dist\admin_reports.php">
+                        <a class="nav-link" href="../dist/Reports.php">
                             <i class="mdi mdi-file-chart menu-icon"></i>
                             <span class="menu-title">Reports</span>
                         </a>
