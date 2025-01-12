@@ -10,121 +10,121 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <style>
-    body {
-        
-        background: url('../images/bg_05.jpg') no-repeat center center fixed;
-        background-size: cover;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0;
-    }
+        body {
 
-    .card {
-        margin-top: 100px;
-        /* Adjust this value as needed */
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 25px;
-        max-width: 400px;
-        width: 100%;
-        margin-bottom: 50px;
-    }
+            background: url('../images/bg_05.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .card {
+            margin-top: 100px;
+            /* Adjust this value as needed */
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.7);
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 25px;
+            max-width: 400px;
+            width: 100%;
+            margin-bottom: 50px;
+        }
 
 
-    .nav-tabs {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
 
-        border-radius: 10px;
-        padding: 10px;
- 
-    }
+            border-radius: 10px;
+            padding: 10px;
 
-    .nav-tabs .nav-link {
-        color: #495057;
-        border-radius: 20px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        margin: 0 5px;
-    }
+        }
 
-    .nav-tabs .nav-link:hover {
-        background: #495057;
-        color: white;
-        transition: 0.5s;
-    }
+        .nav-tabs .nav-link {
+            color: #495057;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin: 0 5px;
+        }
 
-    .nav-tabs .nav-link.active {
-        background-color: #ffee00;
-        color: black;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
+        .nav-tabs .nav-link:hover {
+            background: #495057;
+            color: white;
+            transition: 0.5s;
+        }
 
-    .form-group {
-        position: relative;
-    }
+        .nav-tabs .nav-link.active {
+            background-color: #ffee00;
+            color: black;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
 
-    .form-group input {
-        border-radius: 10px;
-        padding: 12px 45px;
-        border: 1px solid #ced4da;
-        transition: all 0.6s;
-        margin-bottom: 20px;
-    }
+        .form-group {
+            position: relative;
+        }
 
-    .form-group input:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
-    }
+        .form-group input {
+            border-radius: 10px;
+            padding: 12px 45px;
+            border: 1px solid #ced4da;
+            transition: all 0.6s;
+            margin-bottom: 20px;
+        }
 
-    .form-group i {
-        position: absolute;
-        left: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #6c757d;
-        font-size: 18px;
-    }
+        .form-group input:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+        }
 
-    .btn-primary {
-        background-color: #ffee00;
-        border-color: #ffee00;
-        color: black;
-        border-radius: 10px;
-        padding: 12px 20px;
-        width: 100%;
-        font-size: 16px;
-        font-weight: bold;
-        transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
-    }
+        .form-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 18px;
+        }
 
-    .btn-primary:hover {
-        background-color: grey;
-        color: white;
-        transform: scale(1.05);
-        transition: 0.5s;
-    }
+        .btn-primary {
+            background-color: #ffee00;
+            border-color: #ffee00;
+            color: black;
+            border-radius: 10px;
+            padding: 12px 20px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s;
+        }
 
-    .form-title {
-        font-size: 30px;
-        font-weight: bold;
-        margin-top: 20px;
-        margin-bottom: 25px;
-        text-align: center;
-        color: #343a40;
-    }
+        .btn-primary:hover {
+            background-color: grey;
+            color: white;
+            transform: scale(1.05);
+            transition: 0.5s;
+        }
 
-    .form-check-input {
-        width: 10px;
-        height: 20px;
-        margin-right: 10px;
-    }
+        .form-title {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #343a40;
+        }
+
+        .form-check-input {
+            width: 10px;
+            height: 20px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 
@@ -132,10 +132,10 @@
     <div class="card">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="signin-tab" href="#" onclick="showForm('signin')">Login</a>
+                <a class="nav-link active" id="signin-tab" href="#" onclick="showForm('signin')">Loginasdasd</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="signup-tab" href="#" onclick="showForm('signup')">Sign Up</a>
+                <a class="nav-link" id="signup-tab" href="#" onclick="showForm('signup')">Signsadasd Up</a>
             </li>
         </ul>
         <div id="formContent">
@@ -227,19 +227,20 @@
     </div>
 
     <script>
-    function showForm(formId) {
-        document.getElementById("signinForm").style.display = formId === "signin" ? "block" : "none";
-        document.getElementById("signupForm").style.display = formId === "signup" ? "block" : "none";
+        function showForm(formId) {
+            document.getElementById("signinForm").style.display = formId === "signin" ? "block" : "none";
+            document.getElementById("signupForm").style.display = formId === "signup" ? "block" : "none";
 
-        document.getElementById("signin-tab").classList.toggle("active", formId === "signin");
-        document.getElementById("signup-tab").classList.toggle("active", formId === "signup");
-    }
+            document.getElementById("signin-tab").classList.toggle("active", formId === "signin");
+            document.getElementById("signup-tab").classList.toggle("active", formId === "signup");
+        }
 
-    // Show verification modal if the session indicates pending verification
-    <?php if (isset($_SESSION['verification_pending']) && $_SESSION['verification_pending'] === true) { ?>
-    var verificationModal = new bootstrap.Modal(document.getElementById("verificationModal"));
-    verificationModal.show();
-    <?php unset($_SESSION['verification_pending']); } ?>
+        // Show verification modal if the session indicates pending verification
+        <?php if (isset($_SESSION['verification_pending']) && $_SESSION['verification_pending'] === true) { ?>
+            var verificationModal = new bootstrap.Modal(document.getElementById("verificationModal"));
+            verificationModal.show();
+            <?php unset($_SESSION['verification_pending']);
+        } ?>
     </script>
 
     <!-- Bootstrap JS -->
