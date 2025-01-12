@@ -132,7 +132,7 @@
     <div class="card">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="signin-tab" href="#" onclick="showForm('signin')">Login</a>
+                <a class="nav-link active" id="signin-tab" href="#" onclick="showForm('signin')">Login okay na?</a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="signup-tab" href="#" onclick="showForm('signup')">Sign Up</a>
