@@ -1,28 +1,70 @@
 <?php
-session_start();
-include('../../connection.php');
+    session_start();
+    include('../../connection.php');
 
-// Admin ID from session remains
-$admin_id = $_SESSION['id']; // Admin session remains intact
+    // Ensure admin is logged in
+    if (!isset($_SESSION['id'])) {
+        die("Admin not logged in.");
+    }
 
-// Get the user ID from the URL parameter
-$user_id = $_GET['user_id']; // Selected user ID
+    $admin_id = $_SESSION['id']; // Get the admin's ID
 
-// Fetch the admin ID from the database where is_admin = 1 to ensure it's correct
-$admin_query = "SELECT id FROM users WHERE is_admin = 1 LIMIT 1";
-$admin_result = mysqli_query($conn, $admin_query);
-$admin_data = mysqli_fetch_assoc($admin_result);
-$admin_id = $admin_data['id']; // Fetch the admin ID again
+    // Fetch admin details
+    $query = "SELECT fname, lname, pic FROM users WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("i", $admin_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $admin = $result->fetch_assoc();
 
-// Fetch the username of the selected user
-$user_query = "SELECT username FROM users WHERE id = ?";
-$stmt_user = $conn->prepare($user_query);
-$stmt_user->bind_param("i", $user_id);
-$stmt_user->execute();
-$user_result = $stmt_user->get_result();
-$user_data = $user_result->fetch_assoc();
-$username = $user_data['username']; // Get the username of the selected user
+    if (!$admin) {
+        die("Admin not found.");
+    }
 
+    $admin_name = $admin['fname'] . ' ' . $admin['lname'];
+    $admin_pic = !empty($admin['pic']) ? '../../' . htmlspecialchars($admin['pic'], ENT_QUOTES, 'UTF-8') : '../../images/profile-user.png';
+
+    $user_id = $_GET['user_id']; // The user ID of the person the admin is chatting with
+
+    // Fetch user details (including the profile picture)
+    $query_user = "SELECT * FROM users WHERE id = ?";
+    $stmt_user = $conn->prepare($query_user);
+    $stmt_user->bind_param("i", $user_id);
+    $stmt_user->execute();
+    $result_user = $stmt_user->get_result();
+    $user = $result_user->fetch_assoc();
+
+    if (!$user) {
+        die("User not found.");
+    }
+
+    $user_name = $user['fname'] . ' ' . $user['lname'];
+    $user_pic = !empty($user['pic']) ? '../../users/' . htmlspecialchars($user['pic'], ENT_QUOTES, 'UTF-8') : '../../images/default-user.png'; // Use default if no pic
+
+
+    // Handle message sending
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['message']) && !empty(trim($_POST['message']))) {
+            $message = trim($_POST['message']);
+            $sendQuery = "INSERT INTO message (sender, recipient, message, status, created_at, updated_at) 
+                        VALUES (?, ?, ?, 'sent', NOW(), NOW())";
+            $sendStmt = $conn->prepare($sendQuery);
+            $sendStmt->bind_param("iis", $admin_id, $user_id, $message);
+            if ($sendStmt->execute()) {
+                echo "<script>console.log('Message sent successfully.');</script>";
+            } else {
+                echo "<script>console.error('Failed to send message.');</script>";
+            }
+            $sendStmt->close();
+        }
+    }
+
+    // Update message status to 'Seen' when the admin opens the chat
+    $updateStatusQuery = "UPDATE message SET status = 'Seen' WHERE sender = ? AND recipient = ? AND status = 'Delivered'";
+    $stmtUpdateStatus = $conn->prepare($updateStatusQuery);
+    $stmtUpdateStatus->bind_param("ii", $admin_id, $user_id);
+    $stmtUpdateStatus->execute();
+    $stmtUpdateStatus->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +75,13 @@ $username = $user_data['username']; // Get the username of the selected user
     <title>Chat with <?php echo htmlspecialchars($username); ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+    .message-status {
+        font-size: 0.6rem; /* Make the text smaller */
+        color: #888;
+        margin-top: 2px;  /* Reduce space between the message and status */
+        padding-left: 5px; /* Add a little left padding for spacing */
+    }
+
     /* Chat Header Styles */
     .chat-header {
         display: flex;
@@ -296,28 +345,23 @@ $username = $user_data['username']; // Get the username of the selected user
             font-size: 0.8rem;
         }
     }
-    </style>
+</style>
 </head>
 
 <body>
     <div class="container">
         <div class="chat-header">
-            <!-- Back Button -->
             <button class="back-button" onclick="history.back()">
                 <img src="../../images/arrow.png" alt="Back">
             </button>
-
-            <!-- Admin Info -->
             <div class="admin-info">
-                <img src="../../images/profile-user.png" alt="Admin Profile Picture">
+                <img src="<?php echo  $user_pic; ?>" alt="User Profile Picture">
                 <div class="details">
-                    <h4>Chat with <?php echo htmlspecialchars($username); ?></h4>
+                    <h4><?php echo htmlspecialchars($user_name); ?></h4>
                     <span>Active Now</span>
                 </div>
             </div>
         </div>
-
-
 
         <!-- Chat messages area -->
         <div id="chat-box" class="chat-box">
@@ -333,24 +377,21 @@ $username = $user_data['username']; // Get the username of the selected user
             while ($row = $result->fetch_assoc()) {
                 $isAdmin = $row['sender'] == $admin_id;
                 $sender = $isAdmin ? "admin" : "user";
+                $status = $row['status']; // Only display status on the sender's messages
                 $timestamp = date("H:i", strtotime($row['created_at']));
 
                 echo "<div class='chat-message {$sender}'>";
                 
-                // Profile icon
-                if ($sender === "user") {
-                    echo "<div class='profile-icon'><img src='../../images/client1.jpg' alt='User'></div>";
-                }
-
                 // Message content
                 echo "<div class='message-content {$sender}'>";
                 echo "<div>" . htmlspecialchars($row['message']) . "</div>";
                 echo "<span class='chat-timestamp'>{$timestamp}</span>";
-                echo "</div>";
-
+                
+                // Show status only for the sender
                 if ($sender === "admin") {
-                    echo "<div class='profile-icon'><img src='../../images/client2.jpg' alt='Admin'></div>";
+                    echo "<div class='message-status'>" . strtoupper($status) . "</div>";
                 }
+                echo "</div>";
 
                 echo "</div>";
             }
@@ -360,55 +401,28 @@ $username = $user_data['username']; // Get the username of the selected user
         </div>
 
         <!-- Form to send messages -->
-        <form id="chat-form" class="chat-footer">
+        <form id="chat-form" method="POST" class="chat-footer">
             <input type="text" id="message" name="message" maxlength="100" placeholder="Write a message..." required />
             <button type="submit">
-                <img src="../../images\send.png" alt="Send">
+                <img src="../../images/send.png" alt="Send">
             </button>
         </form>
     </div>
 
     <script>
-    // Scroll to the bottom of the chat box on load
-    const chatBox = document.getElementById('chat-box');
-    chatBox.scrollTop = chatBox.scrollHeight;
+        // Scroll to the bottom of the chat box on load
+        const chatBox = document.getElementById('chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;
 
-    // Handle form submission with AJAX
-    document.getElementById("chat-form").addEventListener("submit", function(e) {
-        e.preventDefault();
+        // Automatically handle form submission
+        document.getElementById("chat-form").addEventListener("submit", function(e) {
+            e.preventDefault();
 
-        const message = document.getElementById("message").value;
+            const message = document.getElementById("message").value;
 
-        // Use AJAX to send the message
-        fetch("send_maggi.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: `message=${encodeURIComponent(message)}&recipient_id=<?php echo $user_id; ?>`
-            })
-            .then(response => response.text())
-            .then(data => {
-                const newMessageDiv = document.createElement("div");
-                newMessageDiv.classList.add("chat-message", "admin");
-
-                newMessageDiv.innerHTML = `
-                    <div class="message-content admin">
-                        <div>${message}</div>
-                        <span class="chat-timestamp">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                    </div>
-                    <div class="profile-icon"><img src="../../images/admin.jpg" alt="Admin"></div>
-                `;
-
-                chatBox.appendChild(newMessageDiv);
-                chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the latest message
-
-                document.getElementById("message").value = ""; // Clear input
-            })
-            .catch(error => console.error("Error:", error));
-    });
+            // Submit the message
+            this.submit(); // This will submit the form to itself and reload the page
+        });
     </script>
 </body>
-
-
 </html>

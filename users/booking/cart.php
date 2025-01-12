@@ -86,7 +86,7 @@
     <title>Rapide</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="../../images\rapide_logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="../../images/rapide_logo.png" type="image/x-icon">
 
     <!-- Google Fonts -->
     <link
@@ -546,23 +546,40 @@
                             <div class="main-menu">
                                 <nav class="navigation">
                                     <ul class="nav menu">
-                                        <li><a href="../../users/Homepage.php">Home</a>
+                                        <li><a href="../Homepage.php">Home</a>
                                         </li>
                                         <!-- <li><a href="#">Doctos </a></li> -->
-                                        <li class="active"><a href="../users\Services.php">Services </a></li>
+                                        <li class="active"><a href="service_list.php">Services </a></li>
                                         <li><a href="#">Map <i class="icofont-rounded-down"></i></a>
                                             <ul class="dropdown">
-                                                <li><a href="Map.php">Emergency Map</a></li>
+                                                <li><a href="../../map/gmap.php">Rapide Cavite Map</a></li>
+                                                <li><a href="../../map/emergency_form.php">Emergency Map</a></li>
                                             </ul>
                                         </li>
                                         <li><a href="#">Chat <i class="icofont-rounded-down"></i></a>
-                                            <ul class="dropdown">
-                                                <li><a href="../message_kineme\user_ansya\S-Silang.php">Silang</a></li>
-                                                <li><a href="../message_kineme\user_ansya\S-Kawit.php">Kawit</a></li>
-                                                <li><a href="../message_kineme\user_ansya\S-Dasma.php">Dasma</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="../../users/Act.php">Activities</a></li>
+                                        <ul class="dropdown">
+                                                <?php
+                                           
+                                             
+                                                $branch_query = "SELECT id, fname, lname FROM users WHERE is_admin = 1";
+                                                $branch_result = $conn->query($branch_query);
+
+                                                if ($branch_result && $branch_result->num_rows > 0):
+                                                    while ($branch = $branch_result->fetch_assoc()):
+                                                        $branch_name = $branch['fname'] . ' ' . $branch['lname'];
+                                                        ?>
+                                                        <li>
+                                                            <a href="../message/chatbox.php?branch_id=<?php echo $branch['id']; ?>">
+                                                                <?php echo htmlspecialchars($branch_name); ?>
+                                                            </a>
+                                                        </li>
+                                                    <?php
+                                                    endwhile;
+                                                else:
+                                                    ?>
+                                                    <li><a href="#">No branches available</a></li>
+                                                <?php endif; ?>
+                                        <li><a href="../Act.php">Activities</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -576,8 +593,8 @@
                                     <!-- Display the username -->
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                                    <li><a class="dropdown-item" href="../login\login.php">Logout</a></li>
+                                    <li><a class="dropdown-item" href="../../login/profile_setup.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="../../login/logout.php">Logout</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -610,7 +627,7 @@
 
         <?php if (count($cart_items) > 0): ?>
         <!-- Form for selecting items to delete or move -->
-        <form id="cart-form" action="bukingPerodiKulong.php" method="POST" onsubmit="return validateSelection()">
+        <form id="cart-form" action="proceed.php" method="POST" onsubmit="return validateSelection()">
 
             <!-- Sticky Cart Summary at the Top -->
             <div class="cart-summary">
@@ -716,7 +733,7 @@
                 const ids = selected.map(checkbox => checkbox.value);
 
                 // Send a request to delete the items
-                fetch('../function/gigilMoko.php', {
+                fetch('delete_item.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

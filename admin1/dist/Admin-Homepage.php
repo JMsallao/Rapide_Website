@@ -160,14 +160,14 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1\dist\Admin-Homepage.php">
+                        <a class="nav-link" href="Admin-Homepage.php">
                             <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../booking/adminMoMamaMo/show_all.php">
+                        <a class="nav-link" href="../booking/history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
                         </a>
@@ -179,19 +179,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/service.php">
+                        <a class="nav-link" href="service.php">
                             <i class="mdi mdi-tools menu-icon"></i>
                             <span class="menu-title">Services</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/Users.php">
+                        <a class="nav-link" href="Users.php">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/message_inbox.php">
+                        <a class="nav-link" href="message_inbox.php">
                             <i class="mdi mdi-message-text-outline menu-icon"></i>
                             <span class="menu-title">Messages</span>
                         </a>

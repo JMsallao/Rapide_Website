@@ -28,9 +28,13 @@
             die("User not found.");
         }
         $stmt->close();
-    // Fetch all users from the database
-    $sql = "SELECT id, fname, lname, email, username, phone, province, city, brgy, bday FROM users";
-    $result = $conn->query($sql);
+    // Fetch all regular users (is_admin = 0)
+    $usersQuery = "SELECT id, fname, lname, email, username, phone, province, city, brgy, bday FROM users WHERE is_admin = 0";
+    $usersResult = $conn->query($usersQuery);
+
+    // Fetch all admins (is_admin = 1)
+    $adminsQuery = "SELECT id, fname, lname, email, username, phone, province, city, brgy, bday FROM users WHERE is_admin = 1";
+    $adminsResult = $conn->query($adminsQuery);
 
 ?>
 
@@ -127,14 +131,14 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
             <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1\dist\Admin-Homepage.php">
+                        <a class="nav-link" href="Admin-Homepage.php">
                             <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item nav-category">UI Elements</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../booking/adminMoMamaMo/show_all.php">
+                        <a class="nav-link" href="../booking/history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
                         </a>
@@ -146,19 +150,19 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/service.php">
+                        <a class="nav-link" href="service.php">
                             <i class="mdi mdi-tools menu-icon"></i>
                             <span class="menu-title">Services</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/Users.php">
+                        <a class="nav-link" href="Users.php">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/message_inbox.php">
+                        <a class="nav-link" href="message_inbox.php">
                             <i class="mdi mdi-message-text-outline menu-icon"></i>
                             <span class="menu-title">Messages</span>
                         </a>
@@ -184,60 +188,104 @@
 
 
             <div class="main-panel">
-    <div class="container mt-5">
-        <h1 class="mb-4">All Users</h1>
-        <!-- Responsive Table Wrapper -->
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email</th>
-                        <th>Username</th>
-                        <th>Phone</th>
-                        <th>Province</th>
-                        <th>City</th>
-                        <th>Barangay</th>
-                        <th>Birthday</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($result->num_rows > 0) {
-                        // Output data of each row
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr>
-                                    <td>{$row['id']}</td>
-                                    <td>{$row['fname']}</td>
-                                    <td>{$row['lname']}</td>
-                                    <td>{$row['email']}</td>
-                                    <td>{$row['username']}</td>
-                                    <td>{$row['phone']}</td>
-                                    <td>{$row['province']}</td>
-                                    <td>{$row['city']}</td>
-                                    <td>{$row['brgy']}</td>
-                                    <td>{$row['bday']}</td>
-                                    <td>
-                                    <a href='edit_user.php?id={$row['id']}' class='btn btn-primary btn-sm'>
-                                        Edit
-                                    </a>
-                                    <a href='delete_user.php?id={$row['id']}' class='btn btn-danger btn-sm'
-                                        onclick='return confirm(\"Are you sure you want to delete this user?\");'>
-                                        Delete
-                                    </a>
-                                </td>
-                                  </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='10' class='text-center'>No users found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
+                <div class="container mt-5">
+                    <h1 class="mb-4">Admins</h1>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Username</th>
+                                    <th>Phone</th>
+                                    <th>Province</th>
+                                    <th>City</th>
+                                    <th>Barangay</th>
+                                    <th>Birthday</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if ($adminsResult->num_rows > 0) {
+                                    while ($row = $adminsResult->fetch_assoc()) {
+                                        echo "<tr>
+                                                <td>{$row['id']}</td>
+                                                <td>{$row['fname']}</td>
+                                                <td>{$row['lname']}</td>
+                                                <td>{$row['email']}</td>
+                                                <td>{$row['username']}</td>
+                                                <td>{$row['phone']}</td>
+                                                <td>{$row['province']}</td>
+                                                <td>{$row['city']}</td>
+                                                <td>{$row['brgy']}</td>
+                                                <td>{$row['bday']}</td>
+                                                <td>
+                                                    <a href='edit_user.php?id={$row['id']}' class='btn btn-primary btn-sm'>Edit</a>
+                                                    <a href='delete_user.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this user?\");'>Delete</a>
+                                                </td>
+                                              </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='10' class='text-center'>No admins found</td></tr>";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="container mt-5">
+                    <h1 class="mb-4">Users</h1>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Username</th>
+                                    <th>Phone</th>
+                                    <th>Province</th>
+                                    <th>City</th>
+                                    <th>Barangay</th>
+                                    <th>Birthday</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                if ($usersResult->num_rows > 0) {
+                                    while ($row = $usersResult->fetch_assoc()) {
+                                        echo "<tr>
+                                                <td>{$row['id']}</td>
+                                                <td>{$row['fname']}</td>
+                                                <td>{$row['lname']}</td>
+                                                <td>{$row['email']}</td>
+                                                <td>{$row['username']}</td>
+                                                <td>{$row['phone']}</td>
+                                                <td>{$row['province']}</td>
+                                                <td>{$row['city']}</td>
+                                                <td>{$row['brgy']}</td>
+                                                <td>{$row['bday']}</td>
+                                                <td>
+                                                    <a href='edit_user.php?id={$row['id']}' class='btn btn-primary btn-sm'>Edit</a>
+                                                    <a href='delete_user.php?id={$row['id']}' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this user?\");'>Delete</a>
+                                                </td>
+                                              </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='10' class='text-center'>No users found</td></tr>";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </div>

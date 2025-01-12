@@ -79,17 +79,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>RAPIDE ADMIN </title>
     <!-- plugins:css -->
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/feather/feather.css">
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/typicons/typicons.css">
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/simple-line-icons/css/simple-line-icons.css">
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/feather/feather.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/typicons/typicons.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
     <!-- endinject -->
     <!-- Plugin css for this page -->
-    <link rel="stylesheet" href="../../admin1/dist/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="../dist/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <link rel="stylesheet" type="text/css" href="../../admin1/dist/assets/js/select.dataTables.min.css">
     <!-- End plugin css for this page -->
     <!-- inject:css -->
@@ -236,10 +236,10 @@
                     </button>
                 </div>
                 <div>
-                    <a class="navbar-brand brand-logo" href="../../admin1\dist\Admin-Homepage.php">
+                    <a class="navbar-brand brand-logo" href="../dist/Admin-Homepage.php">
                         <h2>Rapide</h2>
                     </a>
-                    <a class="navbar-brand brand-logo-mini" href="../../admin1\dist\Admin-Homepage.php">
+                    <a class="navbar-brand brand-logo-mini" href="../dist/Admin-Homepage.php">
                         <h3>R</h3>
                     </a>
                 </div>
@@ -265,38 +265,38 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/Admin-Homepage.php">
+                        <a class="nav-link" href="../dist/Admin-Homepage.php">
                             <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="show_all.php">
+                        <a class="nav-link" href="history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/pages.php">
+                        <a class="nav-link" href="../dist/pages.php">
                             <i class="mdi mdi-file-multiple menu-icon"></i>
                             <span class="menu-title">Pages</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/service.php">
+                        <a class="nav-link" href="../dist/service.php">
                             <i class="mdi mdi-tools menu-icon"></i>
                             <span class="menu-title">Services</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/Users.php">
+                        <a class="nav-link" href="..//dist/Users.php">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/message_inbox.php">
+                        <a class="nav-link" href="../dist/message_inbox.php">
                             <i class="mdi mdi-message-text-outline menu-icon"></i>
                             <span class="menu-title">Messages</span>
                         </a>

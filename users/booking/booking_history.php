@@ -1,57 +1,57 @@
 <?php
-include('../../sessioncheck.php');
-include('../../connection.php');
-include('../../users/style.php');
+    include('../../sessioncheck.php');
+    include('../../connection.php');
+    include('../../users/style.php');
 
-// Fetch package services from the database
-$sql_package = "SELECT * FROM package_list";
-$result_package = $conn->query($sql_package);
+    // Fetch package services from the database
+    $sql_package = "SELECT * FROM package_list";
+    $result_package = $conn->query($sql_package);
 
-// Ensure the session user ID is set correctly
-if (isset($_SESSION['id'])) {
-    $user_id = $_SESSION['id'];
-} else {
-    die("User ID is not set in the session.");
-}
-
-// Fetch user data from the database securely using prepared statements
-$username = "Guest"; // Default username for fallback
-
-$query = "SELECT username FROM users WHERE id = ?";
-$stmt = $conn->prepare($query);
-if ($stmt) {
-    $stmt->bind_param("i", $user_id); // Bind the user ID to the query
-    $stmt->execute(); // Execute the query
-    $result = $stmt->get_result(); // Get the result of the query
-
-    if ($result && $result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $username = $row['username']; // Assign the username
+    // Ensure the session user ID is set correctly
+    if (isset($_SESSION['id'])) {
+        $user_id = $_SESSION['id'];
     } else {
-        // Handle case where user data is not found
-        $username = "Guest"; 
+        die("User ID is not set in the session.");
     }
-    $stmt->close(); // Close the statement
-} else {
-    die("Failed to prepare the database query.");
-}
 
-// Fetch bookings filtered by status if provided
-$selected_status = isset($_GET['status']) ? $_GET['status'] : '';
-$query = "SELECT * FROM bookings WHERE user_id = ?";
-if (!empty($selected_status)) {
-    $query .= " AND status = ?";
-}
-$query .= " ORDER BY booking_date DESC";
+    // Fetch user data from the database securely using prepared statements
+    $username = "Guest"; // Default username for fallback
 
-$stmt = $conn->prepare($query);
-if (!empty($selected_status)) {
-    $stmt->bind_param("is", $user_id, $selected_status);
-} else {
-    $stmt->bind_param("i", $user_id);
-}
-$stmt->execute();
-$result = $stmt->get_result();
+    $query = "SELECT username FROM users WHERE id = ?";
+    $stmt = $conn->prepare($query);
+    if ($stmt) {
+        $stmt->bind_param("i", $user_id); // Bind the user ID to the query
+        $stmt->execute(); // Execute the query
+        $result = $stmt->get_result(); // Get the result of the query
+
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $username = $row['username']; // Assign the username
+        } else {
+            // Handle case where user data is not found
+            $username = "Guest"; 
+        }
+        $stmt->close(); // Close the statement
+    } else {
+        die("Failed to prepare the database query.");
+    }
+
+    // Fetch bookings filtered by status if provided
+    $selected_status = isset($_GET['status']) ? $_GET['status'] : '';
+    $query = "SELECT * FROM bookings WHERE user_id = ?";
+    if (!empty($selected_status)) {
+        $query .= " AND status = ?";
+    }
+    $query .= " ORDER BY booking_date DESC";
+
+    $stmt = $conn->prepare($query);
+    if (!empty($selected_status)) {
+        $stmt->bind_param("is", $user_id, $selected_status);
+    } else {
+        $stmt->bind_param("i", $user_id);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -382,25 +382,42 @@ $result = $stmt->get_result();
                         <div class="col-lg-7 col-md-9 col-12">
                             <!-- Main Menu -->
                             <div class="main-menu">
-                                <nav class="navigation">
+                            <nav class="navigation">
                                     <ul class="nav menu">
-                                        <li><a href="../../users/Homepage.php">Home</a>
+                                        <li><a href="../Homepage.php">Home</a>
                                         </li>
                                         <!-- <li><a href="#">Doctos </a></li> -->
-                                        <li class="active"><a href="../users\Services.php">Services </a></li>
+                                        <li class="active"><a href="service_list.php">Services </a></li>
                                         <li><a href="#">Map <i class="icofont-rounded-down"></i></a>
                                             <ul class="dropdown">
-                                                <li><a href="Map.php">Emergency Map</a></li>
+                                                <li><a href="../../map/gmap.php">Rapide Cavite Map</a></li>
+                                                <li><a href="../../map/emergency_form.php">Emergency Map</a></li>
                                             </ul>
                                         </li>
                                         <li><a href="#">Chat <i class="icofont-rounded-down"></i></a>
-                                            <ul class="dropdown">
-                                                <li><a href="../message_kineme\user_ansya\S-Silang.php">Silang</a></li>
-                                                <li><a href="../message_kineme\user_ansya\S-Kawit.php">Kawit</a></li>
-                                                <li><a href="../message_kineme\user_ansya\S-Dasma.php">Dasma</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="../../users/Act.php">Activities</a></li>
+                                        <ul class="dropdown">
+                                                <?php
+                                           
+                                             
+                                                $branch_query = "SELECT id, fname, lname FROM users WHERE is_admin = 1";
+                                                $branch_result = $conn->query($branch_query);
+
+                                                if ($branch_result && $branch_result->num_rows > 0):
+                                                    while ($branch = $branch_result->fetch_assoc()):
+                                                        $branch_name = $branch['fname'] . ' ' . $branch['lname'];
+                                                        ?>
+                                                        <li>
+                                                            <a href="../message/chatbox.php?branch_id=<?php echo $branch['id']; ?>">
+                                                                <?php echo htmlspecialchars($branch_name); ?>
+                                                            </a>
+                                                        </li>
+                                                    <?php
+                                                    endwhile;
+                                                else:
+                                                    ?>
+                                                    <li><a href="#">No branches available</a></li>
+                                                <?php endif; ?>
+                                        <li><a href="../Act.php">Activities</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -414,8 +431,8 @@ $result = $stmt->get_result();
                                     <!-- Display the username -->
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                                    <li><a class="dropdown-item" href="../login\login.php">Logout</a></li>
+                                    <li><a class="dropdown-item" href="../../login/profile_setup.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="../../login/logout.php">Logout</a></li>
                                 </ul>
                             </div>
                         </div>

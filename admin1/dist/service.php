@@ -510,7 +510,7 @@
                     </li>
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../booking/adminMoMamaMo/show_all.php">
+                        <a class="nav-link" href="../booking/history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
                         </a>

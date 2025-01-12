@@ -593,14 +593,14 @@
                             <div class="main-menu">
                                 <nav class="navigation">
                                     <ul class="nav menu">
-                                        <li ><a href="../../users\Homepage.php">Home</a>
+                                        <li ><a href="../Homepage.php">Home</a>
                                         </li>
                                         <!-- <li><a href="#">Doctos </a></li> -->
-                                        <li class="active"><a href="../../booking\customerAlwaysRight\service_list.php">Services </a></li>
+                                        <li class="active"><a href="service_list.php">Services </a></li>
                                         <li><a href="#">Map <i class="icofont-rounded-down"></i></a>
                                             <ul class="dropdown">
-                                                <li><a href="../../map\gmap.php">Rapide Cavite Map</a></li>
-                                                <li><a href="../../map\emergency_form.php">Emergency Map</a></li>
+                                                <li><a href="../../map/gmap.php">Rapide Cavite Map</a></li>
+                                                <li><a href="../../map/emergency_form.php">Emergency Map</a></li>
                                             </ul>
                                         </li>
                                         <li><a href="#">Chat <i class="icofont-rounded-down"></i></a>
@@ -616,7 +616,7 @@
                                                         $branch_name = $branch['fname'] . ' ' . $branch['lname'];
                                                         ?>
                                                         <li>
-                                                            <a href="../message_kineme/user_ansya/chat_kinems.php?branch_id=<?php echo $branch['id']; ?>">
+                                                            <a href="../message/chatbox.php?branch_id=<?php echo $branch['id']; ?>">
                                                                 <?php echo htmlspecialchars($branch_name); ?>
                                                             </a>
                                                         </li>
@@ -628,7 +628,7 @@
                                                 <?php endif; ?>
                                             </ul>
                                         </li>
-                                        <li><a href="../../users/Act.php">Activities</a></li>
+                                        <li><a href="../Act.php">Activities</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -645,8 +645,8 @@
                                     <!-- Display the username -->
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="../../login\profile_setup.php">Profile</a></li>
-                                    <li><a class="dropdown-item" href="../../login\logout.php">Logout</a></li>
+                                    <li><a class="dropdown-item" href="../../login/profile_setup.php">Profile</a></li>
+                                    <li><a class="dropdown-item" href="../../login/logout.php">Logout</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -665,12 +665,12 @@
     <div class="container mt-4">
         <div class="search-container">
             <nav class="custom-navbar">
-                <a href="kariton.php" id="cart-icon" class="nav-link">
+                <a href="cart.php" id="cart-icon" class="nav-link">
                     Cart
                     <span id="cart-notification" class="badge"><?php echo $cartCount; ?></span>
                 </a>
                 <h2 class="text-center mb-4">Services List</h2>
-                <a href="past_is_past.php" class="nav-link">
+                <a href="booking_history.php" class="nav-link">
                     History
                 </a>
             </nav>
@@ -732,7 +732,7 @@
                             <h4>' . htmlspecialchars($row['name']) . '</h4>
                             <h5>₱ ' . number_format($row['price'], 2) . '</h5>
                             <p>' . htmlspecialchars($row['description']) . '</p>
-                            <form class="add-to-cart-form" action="../function/add2koleksyon.php" method="POST">
+                            <form class="add-to-cart-form" action="addcart.php" method="POST">
                                 <input type="hidden" name="service_id" value="' . htmlspecialchars($service_id, ENT_QUOTES, 'UTF-8') . '">
                                 <input type="hidden" name="service_table" value="' . htmlspecialchars($table_name) . '">
                                 <input type="hidden" name="service_name" value="' . htmlspecialchars($services_name) . '">

@@ -169,7 +169,7 @@
                                         <li class="active"><a href="#">Home</a>
                                         </li>
                                         <!-- <li><a href="#">Doctos </a></li> -->
-                                        <li><a href="../booking/customerAlwaysRight/service_list.php">Services </a></li>
+                                        <li><a href="booking/service_list.php">Services </a></li>
                                         <li><a href="#">Map <i class="icofont-rounded-down"></i></a>
                                             <ul class="dropdown">
                                                 <li><a href="../map/gmap.php">Rapide Cavite Map</a></li>
@@ -188,7 +188,7 @@
                                                         $branch_name = $branch['fname'] . ' ' . $branch['lname'];
                                                         ?>
                                                         <li>
-                                                            <a href="../message_kineme/user_ansya/chat_kinems.php?branch_id=<?php echo $branch['id']; ?>">
+                                                            <a href="message/chatbox.php?branch_id=<?php echo $branch['id']; ?>">
                                                                 <?php echo htmlspecialchars($branch_name); ?>
                                                             </a>
                                                         </li>

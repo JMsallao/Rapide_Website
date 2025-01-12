@@ -33,8 +33,8 @@ $stmt->close();
 $admin_id = $_SESSION['id'];
 
 
-// Query to fetch distinct users that the admin has chatted with
-$query = "SELECT DISTINCT u.id, u.username 
+// Query to fetch distinct users that the admin has chatted with, including their profile picture
+$query = "SELECT DISTINCT u.id, u.username, u.pic 
           FROM users u 
           JOIN message m ON u.id = m.sender OR u.id = m.recipient 
           WHERE (m.sender = ? OR m.recipient = ?) AND u.is_admin = 0"; // Exclude admin
@@ -212,6 +212,7 @@ $result = $stmt->get_result();
                         <h3 class="welcome-sub-text"><?php echo $lname; ?></h3> <!-- Last name in H3 -->
                     </li>
                 </ul>
+                
             </div>
         </nav>
 
@@ -226,14 +227,14 @@ $result = $stmt->get_result();
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1\dist\Admin-Homepage.php">
+                        <a class="nav-link" href="Admin-Homepage.php">
                             <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../booking/adminMoMamaMo/show_all.php">
+                        <a class="nav-link" href="../booking/history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
                         </a>
@@ -245,19 +246,19 @@ $result = $stmt->get_result();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/service.php">
+                        <a class="nav-link" href="service.php">
                             <i class="mdi mdi-tools menu-icon"></i>
                             <span class="menu-title">Services</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/Users.php">
+                        <a class="nav-link" href="Users.php">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
                             <span class="menu-title">Users</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1/dist/message_inbox.php">
+                        <a class="nav-link" href="message_inbox.php">
                             <i class="mdi mdi-message-text-outline menu-icon"></i>
                             <span class="menu-title">Messages</span>
                         </a>
@@ -288,47 +289,51 @@ $result = $stmt->get_result();
 
                 <div class="main-panel">
                     <div class="container">
-                        <h2 class="text-center mb-4">Chat Conversations</h2>
+                        <h2 class="text-center mb-4">Inbox</h2>
                         <div class="chat-list">
-                            <?php
-                // Display users who have chatted with the admin
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        $userId = $row['id'];
-                        $username = htmlspecialchars($row['username']);
-    
-                        // Fetch the latest message for this user
-                        $latestMessageQuery = "SELECT message, created_at FROM message 
-                                               WHERE (sender = ? AND recipient = ?) OR (sender = ? AND recipient = ?) 
-                                               ORDER BY created_at DESC LIMIT 1";
-                        $stmtMessage = $conn->prepare($latestMessageQuery);
-                        $stmtMessage->bind_param("iiii", $admin_id, $userId, $userId, $admin_id);
-                        $stmtMessage->execute();
-                        $latestMessageResult = $stmtMessage->get_result();
-                        $latestMessage = $latestMessageResult->fetch_assoc();
-    
-                        $messagePreview = $latestMessage ? htmlspecialchars($latestMessage['message']) : "No messages yet.";
-                        $messageTime = $latestMessage ? date("H:i", strtotime($latestMessage['created_at'])) : "";
-    
-                        echo "
-                        <a href='../../message_kineme\Admin_Dasma\M-Dasma.php?user_id={$userId}' class='chat-link'>
-                            <div class='chat-item'>
-                                <img src='../../images/default-user.png' alt='Profile' class='profile-img'>
-                                <div class='chat-details'>
-                                    <p class='chat-username'>{$username}</p>
-                                    <p class='chat-preview'>{$messagePreview}</p>
-                                </div>
-                                <span class='chat-time'>{$messageTime}</span>
-                            </div>
-                        </a>
-                        ";
-    
-                        $stmtMessage->close();
-                    }
-                } else {
-                    echo "<div class='no-users'>No users to display.</div>";
-                }
-                ?>
+                        <?php
+                            // Display users who have chatted with the admin
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    $userId = $row['id'];
+                                    $username = htmlspecialchars($row['username']); 
+
+                                    // Fetch user profile picture from the result
+                                    $userPic = !empty($row['pic']) ? '../../users/' . htmlspecialchars($row['pic'], ENT_QUOTES, 'UTF-8') : '../../images/default-user.png';
+
+                                    // Fetch the latest message for this user
+                                    $latestMessageQuery = "SELECT message, created_at FROM message 
+                                                        WHERE (sender = ? AND recipient = ?) OR (sender = ? AND recipient = ?) 
+                                                        ORDER BY created_at DESC LIMIT 1";
+                                    $stmtMessage = $conn->prepare($latestMessageQuery);
+                                    $stmtMessage->bind_param("iiii", $admin_id, $userId, $userId, $admin_id);
+                                    $stmtMessage->execute();
+                                    $latestMessageResult = $stmtMessage->get_result();
+                                    $latestMessage = $latestMessageResult->fetch_assoc();
+
+                                    $messagePreview = $latestMessage ? htmlspecialchars($latestMessage['message']) : "No messages yet.";
+                                    $messageTime = $latestMessage ? date("H:i", strtotime($latestMessage['created_at'])) : "";
+                                    
+                                    echo "
+                                    <a href='../message/chatbox.php?user_id={$userId}' class='chat-link'>
+                                        <div class='chat-item'>
+                                            <img src='{$userPic}' alt='Profile' class='profile-img'> <!-- User's profile picture -->
+                                            <div class='chat-details'>
+                                                <p class='chat-username'>{$username}</p>
+                                                <p class='chat-preview'>{$messagePreview}</p>
+                                            </div>
+                                            <span class='chat-time'>{$messageTime}</span>
+                                        </div>
+                                    </a>
+                                    ";
+
+                                    $stmtMessage->close();
+                                }
+                            } else {
+                                echo "<div class='no-users'>No users to display.</div>";
+                            }
+                            ?>
+
                         </div>
                     </div>
 

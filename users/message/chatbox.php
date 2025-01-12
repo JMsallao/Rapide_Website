@@ -12,48 +12,50 @@
 <body>
     <div class="container">
         <?php
-        session_start();
-        include('../../connection.php');
+            include('../../sessioncheck.php');
+            include('../../connection.php');
 
-        // Check if branch_id is set in GET parameter
-        if (!isset($_GET['branch_id'])) {
-            die("No branch selected.");
-        }
-
-        $branch_id = $_GET['branch_id'];
-        $user_id = $_SESSION['id'];
-        $_SESSION['recipient_id'] = $branch_id; // Store branch ID in session for later use
-
-        // Fetch branch details (name and profile picture)
-        $query = "SELECT fname, lname, pic FROM users WHERE id = ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("i", $branch_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $branch = $result->fetch_assoc();
-
-        if (!$branch) {
-            die("Branch not found.");
-        }
-
-        $branch_name = $branch['fname'] . ' ' . $branch['lname'];
-        $branch_pic = !empty($branch['pic']) ? '../../' . htmlspecialchars($branch['pic'], ENT_QUOTES, 'UTF-8') : '../../images/profile-user.png';
-
-        // Handle message sending
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['message']) && !empty(trim($_POST['message']))) {
-                $message = trim($_POST['message']);
-                $sendQuery = "INSERT INTO message (sender, recipient, message, status, created_at) VALUES (?, ?, ?, 'sent', NOW())";
-                $sendStmt = $conn->prepare($sendQuery);
-                $sendStmt->bind_param("iis", $user_id, $branch_id, $message);
-                if ($sendStmt->execute()) {
-                    echo "<script>console.log('Message sent successfully.');</script>";
-                } else {
-                    echo "<script>console.error('Failed to send message.');</script>";
-                }
-                $sendStmt->close();
+            // Check if branch_id is set in GET parameter
+            if (!isset($_GET['branch_id'])) {
+                die("No branch selected.");
             }
-        }
+
+            $branch_id = $_GET['branch_id'];
+            $user_id = $_SESSION['id'];
+            $_SESSION['recipient_id'] = $branch_id; // Store branch ID in session for later use
+
+            // Fetch branch details (name and profile picture)
+            $query = "SELECT fname, lname, pic FROM users WHERE id = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $branch_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $branch = $result->fetch_assoc();
+
+            if (!$branch) {
+                die("Branch not found.");
+            }
+
+            $branch_name = $branch['fname'] . ' ' . $branch['lname'];
+            $branch_pic = !empty($branch['pic']) ? '../../' . htmlspecialchars($branch['pic'], ENT_QUOTES, 'UTF-8') : '../../images/profile-user.png';
+
+            // Handle message sending
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['message']) && !empty(trim($_POST['message']))) {
+                    $message = trim($_POST['message']);
+                    $sendQuery = "INSERT INTO message (sender, recipient, message, status, created_at, updated_at) 
+                                VALUES (?, ?, ?, 'sent', NOW(), NOW())";
+                    $sendStmt = $conn->prepare($sendQuery);
+                    $sendStmt->bind_param("iis", $user_id, $branch_id, $message);
+                    if ($sendStmt->execute()) {
+                        echo "<script>console.log('Message sent successfully.');</script>";
+                    } else {
+                        echo "<script>console.error('Failed to send message.');</script>";
+                    }
+                    $sendStmt->close();
+                }
+            }
+
         ?>
         <div class="d-flex align-items-center p-3" style="width: 100%;">
             <!-- Back Button -->
@@ -101,6 +103,7 @@
                 $isUser = $row['sender'] == $user_id;
                 $sender = $isUser ? "user" : "admin";
                 $timestamp = date("H:i", strtotime($row['created_at']));
+                $status = $row['status']; // Fetch the status of the message
             ?>
             <div class="chat-message <?= $sender ?>" onclick="toggleTimestamp(this)">
                 <div class="message-content <?= htmlspecialchars($sender, ENT_QUOTES, 'UTF-8') ?>">
@@ -108,6 +111,11 @@
                     <span class="chat-timestamp" style="display: none;">
                         <?= htmlspecialchars($timestamp, ENT_QUOTES, 'UTF-8') ?>
                     </span>
+
+                    <!-- Displaying message status -->
+                    <small class="chat-status text-muted" style="font-size: 0.75rem;">
+                         <?= htmlspecialchars($status, ENT_QUOTES, 'UTF-8') ?>
+                    </small>
                 </div>
             </div>
             <?php

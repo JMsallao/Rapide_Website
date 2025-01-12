@@ -212,63 +212,63 @@
 
     <style>
 
-.image-container {
-        position: relative;
-        border: 1px solid #ddd;
-        padding: 10px;
-        width: 120px;
-        height: 120px;
-    }
+        .image-container {
+            position: relative;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 120px;
+            height: 120px;
+        }
 
-    .image-container img {
-        max-width: 100%;
-        max-height: 100%;
-        display: block;
-        margin: 0 auto;
-    }
+        .image-container img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            margin: 0 auto;
+        }
 
-    .delete-btn {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        background-color: #ff4d4d;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 12px;
-    }
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
 
-    .delete-btn:hover {
-        background-color: #e60000;
-    }
+        .delete-btn:hover {
+            background-color: #e60000;
+        }
 
-    .badge-counter {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        transform: translate(50%, -50%);
-        font-size: 12px;
-        background-color: #ff3d3d;
-        /* Vibrant red */
-        color: white;
-        padding: 4px 8px;
-        border-radius: 50%;
-        /* Perfect circle */
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-        font-weight: bold;
-    }
+        .badge-counter {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            transform: translate(50%, -50%);
+            font-size: 12px;
+            background-color: #ff3d3d;
+            /* Vibrant red */
+            color: white;
+            padding: 4px 8px;
+            border-radius: 50%;
+            /* Perfect circle */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
 
-    /* Adjust bell icon positioning */
-    .fa-bell {
-        position: relative;
-    }
+        /* Adjust bell icon positioning */
+        .fa-bell {
+            position: relative;
+        }
 
-    /* Adjust dropdown spacing */
-    .dropdown-menu {
-        margin-top: 10px;
-    }
+        /* Adjust dropdown spacing */
+        .dropdown-menu {
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -312,14 +312,14 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="../../admin1\dist\Admin-Homepage.php">
+                        <a class="nav-link" href="../../admin1/dist/Admin-Homepage.php">
                             <i class="mdi mdi-view-dashboard-outline menu-icon"></i>
                             <span class="menu-title">Dashboard</span>
                         </a>
                     </li>
                     <li class="nav-item nav-category">Menu</li>
                     <li class="nav-item">
-                        <a class="nav-link" href="../../booking/adminMoMamaMo/show_all.php">
+                        <a class="nav-link" href="../booking/history.php">
                             <i class="mdi mdi-calendar-check menu-icon"></i>
                             <span class="menu-title">Booking</span>
                         </a>
